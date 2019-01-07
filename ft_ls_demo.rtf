@@ -40,9 +40,8 @@ Fonctions autoris\'e9s non connus :\
 	- getpwuid\
 		renvoie un pointeur sur une struct contenant les divers infos enregistres correspondant a l\'92ID user \'93uid\'94 (uid recuperable grace a la fct stat)\
 			\cf2 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 *pw_name;   username char*\
-\pard\pardeftab720\sl280\partightenfactor0
-\cf2 			*pw_passwd; passed char*\
+*pw_name;   username char*\
+			*pw_passwd; passed char*\
 			pw_uid;    ID user uid_t\
 			pw_gid;    ID group gid_t\
 			*pw_gecos;  real name user char *\
@@ -51,17 +50,27 @@ Fonctions autoris\'e9s non connus :\
 \f1 \
 \pard\pardeftab720\sl280\partightenfactor0
 
-\f0 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 \
+\f0 \cf0 \kerning1\expnd0\expndtw0 \
 	- getgrgid\
 		renvoie un pointeur sur une struct contenant les divers infos enregistres correspondant au groupe \'93gid\'94 (gid recuperable grace a la fct stat)\
 	- listxattr\
+		ecris dans la chaine de caract\'e8re buff envoye en param\'e8tre la liste des attributs \'e9tendues du fichier path.\
+			exemple:\
+				com.Apple.finderInfo\
+				\'85..\
 	- getxattr\
+		lis la valeur d\'92un attribut \'e9tendu r\'e9cup\'e9r\'e9, par exemple, grace a listxattr\
 	- time\
+		renvoie l\'92heure actuelle sous forme du nombre de secondes \'e9coul\'e9es depuis le 1 janvier 1970 a minuit pile.\
 	- ctime\
+		recupere une valeur repr\'e9sentant l\'92heure actuelle en secondes \'e9coul\'e9s depuis le 1 janvier 1970 a minuit (fct \'91time\'92) et la convertir en binaire ascii plus comprehensible par l\'92homme\
 	- readlink\
+		lis le contenu d\'92un lien symbolique\
 	- perror\
+		affiche un message sur la sortir d\'92erreur standard, d\'e9crivant la derni\'e8re erreur rencontree durant un appel syst\'e8me ou une fonction de biblioth\'e8que.\
+		Permet donc d\'92afficher un message d\'92erreur syst\'e8me.\
 	- strerror\
-\
+		permet d\'92obtenir le libelle d\'92un numero d\'92erreur.\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 \cf0 \
 -l = Le format long. Affiche les details de chaque fichier et dossiers present dans le repertoire actuel.\

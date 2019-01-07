@@ -15,17 +15,18 @@
 #include <stdio.h>
 #include <sys/stat.h> 
 #include <unistd.h>
+#include <sys/xattr.h>
+#include <stdlib.h>
+#include <string.h>
 
 int		main()
 {
 	struct dirent *stru;
 	DIR *dir;
 	struct stat *buf;
-	unsigned long size;
+	int size;
+	char *list;
 
-	buf = (struct stat*)malloc(sizeof(buf));
-
-	stat("./test.c", buf);
 	/*
 	printf("dev_t: %lu\n", sizeof(dev_t));
 	printf("ino_t: %lu\n", sizeof(ino_t));
@@ -37,15 +38,17 @@ int		main()
 	printf("blkcnt_t: %lu\n", sizeof(blkcnt_t));
 	printf("time_t: %lu\n", sizeof(time_t));
 	*/
-	printf("    %u    %hu\n", buf->st_gid, buf->st_mode);
-
-	if ((dir = opendir("./")) == NULL)
-		perror("opendir() error");
+	
+	if ((dir = opendir("./fff/")) == NULL)
+		strerror(1);
 	else
+	{
 		while ((stru = readdir(dir)) != NULL)
 		{
 			printf("%s\n", stru->d_name);
 		}
 	closedir(dir);
+	}
+	
 	return 0;
 }
