@@ -111,4 +111,11 @@ Fonctions autoris\'e9s non connus :\
 \
 -a = Inclut dans l\'92affichage les fichiers ou dossiers dont le nom commencent par un \'91.\'92 (point)\
 \
-}
+\
+\
+ERREURS A GERER: \
+	Si param\'e8tre vide avec double quote (\'93\'94), le ls ne doit plus rien faire.\
+	si double tiret en param\'e8tre, cela veut dire qu\'92on stoppe la lecture de param\'e8tres par exemple, si j\'92ai un dossier nomm\'e9 -l, pour pouvoir afficher son contenu, je vais \'e9crire \'93ls -la \'97 -l\'94\
+	attention avec gid et uid qui peuvent provoquer un segfault en cas de retour NULL, si retour NULL afficher son numero.\
+	ordre different si argument ou pas\
+	dates dans le futur et dates dans le passe de plus de 6 mois, afficher l\'92annee}

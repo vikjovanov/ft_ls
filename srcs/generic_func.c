@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   generic_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 09:23:10 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/08 09:23:11 by vjovanov         ###   ########.fr       */
+/*   Created: 2019/01/11 09:10:14 by vjovanov          #+#    #+#             */
+/*   Updated: 2019/01/11 09:10:16 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
-
-/*
-** Definition of "extern char g_param" in header file
-*/
-
-char g_params = 0;
-
-
-
-int		main(int argc, char **argv)
+long	ft_exp_l(long n, int exp)
 {
-	t_dir	*lst_dir;
+	long	value_exp;
+	int		i;
 
-	lst_dir = NULL;
-	arg_checker(argc, argv, lst_dir);
-	return (0);
+	value_exp = n;
+	i = 0;
+	if (exp == 0)
+		return (1.0);
+	while (i < exp - 1)
+	{
+		value_exp *= n;
+		i++;
+	}
+	return (value_exp);
 }

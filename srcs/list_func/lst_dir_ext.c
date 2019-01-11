@@ -1,30 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   lst_dir_ext.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 09:23:10 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/08 09:23:11 by vjovanov         ###   ########.fr       */
+/*   Created: 2019/01/11 11:35:46 by vjovanov          #+#    #+#             */
+/*   Updated: 2019/01/11 11:35:47 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-/*
-** Definition of "extern char g_param" in header file
-*/
-
-char g_params = 0;
-
-
-
-int		main(int argc, char **argv)
+int		is_empty_dir(t_dir *dir)
 {
-	t_dir	*lst_dir;
-
-	lst_dir = NULL;
-	arg_checker(argc, argv, lst_dir);
+	if (dir == NULL)
+		return (1);
 	return (0);
 }
+/*
+t_dir	*del_back_dir(t_dir *dir)
+{
+
+}
+
+t_dir	*del_front_dir(t_dir *dir)
+{
+
+}
+
+t_dir	*clear_dir(t_dir *dir)
+{
+
+}
+
+size_t	*length_dir(t_dir *dir)
+{
+
+}
+*/

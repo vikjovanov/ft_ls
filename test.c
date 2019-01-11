@@ -18,37 +18,26 @@
 #include <sys/xattr.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ft_printf.h"
+#include "ft_ls.h"
 
 int		main()
 {
-	struct dirent *stru;
-	DIR *dir;
-	struct stat *buf;
-	int size;
-	char *list;
+	t_dir *dir;
 
-	/*
-	printf("dev_t: %lu\n", sizeof(dev_t));
-	printf("ino_t: %lu\n", sizeof(ino_t));
-	printf("mode_t: %lu\n", sizeof(mode_t));
-	printf("nlink_t: %lu\n", sizeof(nlink_t));
-	printf("uid_t: %lu\n", sizeof(uid_t));
-	printf("gid_t: %lu\n", sizeof(gid_t));
-	printf("blksize_t: %lu\n", sizeof(blksize_t));
-	printf("blkcnt_t: %lu\n", sizeof(blkcnt_t));
-	printf("time_t: %lu\n", sizeof(time_t));
-	*/
-	
-	if ((dir = opendir("./fff/")) == NULL)
-		strerror(1);
-	else
+	dir = new_dir();
+	dir = insert_back_dir(dir, "u/", "libft/");
+	dir = insert_front_dir(dir, "libft/", "srcs/");
+	dir = insert_front_dir(dir, "srcs/", NULL);
+	dir = insert_back_dir(dir, "incl/", "libft/");
+	dir = insert_back_dir(dir, "p/", "libft/");
+
+	while (dir != NULL)
 	{
-		while ((stru = readdir(dir)) != NULL)
-		{
-			printf("%s\n", stru->d_name);
-		}
-	closedir(dir);
+		printf("pathname: %s\n", dir->pathname);
+		printf("parent: %s\n", dir->parent);
+		printf("========================\n");
+		dir = dir->next;
 	}
-	
 	return 0;
 }
