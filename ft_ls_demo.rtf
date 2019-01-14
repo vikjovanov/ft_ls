@@ -27,14 +27,15 @@ Fonctions autoris\'e9s non connus :\
 		\'93obtient l\'92\'e9tat d\'92un fichier\'94\
 		struct stat sizeof elements:\
 			dev_t: 4 (int)\
-			ino_t: 8 (double)\
+			ino_t: 8 (long long)\
 			mode_t: 2 (int)\
 			nlink_t: 2 (int) \
 			uid_t: 4 (int)\
 			gid_t: 4 (int)\
+			off_t: 8 (long long)\
 			blksize_t: 4 (int)\
-			blkcnt_t: 8 (double)\
-			time_t: 8 (double)\
+			blkcnt_t: 8 (long long)\
+			struct timespec: non detecte par GNU mac\
 	- lstat\
 		\'93obtient l\'92etat d\'92un fichier. Cependant, si le path est un lien symbolique, il donne l\'92\'e9tat du lien lui-meme et non du fichier vise par ce lien\'94\
 	- getpwuid\
@@ -61,6 +62,7 @@ Fonctions autoris\'e9s non connus :\
 		lis la valeur d\'92un attribut \'e9tendu r\'e9cup\'e9r\'e9, par exemple, grace a listxattr\
 	- time\
 		renvoie l\'92heure actuelle sous forme du nombre de secondes \'e9coul\'e9es depuis le 1 janvier 1970 a minuit pile.\
+			time_t: 8 (long)\
 	- ctime\
 		recupere une valeur repr\'e9sentant l\'92heure actuelle en secondes \'e9coul\'e9s depuis le 1 janvier 1970 a minuit (fct \'91time\'92) et la convertir en binaire ascii plus comprehensible par l\'92homme\
 	- readlink\

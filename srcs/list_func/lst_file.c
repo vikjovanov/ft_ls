@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_dir.c                                          :+:      :+:    :+:   */
+/*   lst_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/11 08:42:38 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/11 08:42:39 by vjovanov         ###   ########.fr       */
+/*   Created: 2019/01/14 14:44:18 by vjovanov          #+#    #+#             */
+/*   Updated: 2019/01/14 14:44:19 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir	*new_dir(void)
+t_file	*new_file(void)
 {
-	t_dir *new;
+	t_file *new;
 
 	if ((new = malloc(sizeof(*new))) == NULL)
 		return (NULL);
+	new->filemode = NULL;
+	new->permission = 0;
+	new->number_of_link = 0;
+	new->owner_name = NULL;
+	new->group_name = NULL;
+	new->size_byte = 0;
+	new->last_modif = 0;
 	new->pathname = NULL;
-	new->parent = NULL;
 	new->next = NULL;
 	return (new);
 }
 
-t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
+t_file	*insert_front_file(t_file *dir, char *path, char *parent)
 {
 	t_dir *new;
 
@@ -42,7 +48,7 @@ t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
 
 }
 /*
-t_dir	*insert_after_elem_dir(t_dir *dir, t_dir *ref_dir,
+t_dir	*insert_after_elem_file(t_dir *dir, t_dir *ref_dir,
 	char *path, char *parent)
 {
 	t_dir *new;
@@ -63,7 +69,7 @@ t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
 
 }
 */
-t_dir	*insert_back_dir(t_dir *dir, char *path, char *parent)
+t_dir	*insert_back_file(t_dir *dir, char *path, char *parent)
 {
 	t_dir *new;
 	t_dir *tmp;
@@ -87,7 +93,7 @@ t_dir	*insert_back_dir(t_dir *dir, char *path, char *parent)
 
 ///////////////////////////////////////////////////////
 
-void	display_lst_dir(t_dir *dir)
+void	display_lst_file(t_dir *dir)
 {
 	t_dir *tmp;
 

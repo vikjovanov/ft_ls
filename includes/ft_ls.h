@@ -92,6 +92,10 @@ t_dir	*insert_back_dir(t_dir *dir, char *path, char *parent);
 t_dir	*del_back_dir(t_dir *dir);
 t_dir	*del_front_dir(t_dir *dir);
 t_dir	*clear_dir(t_dir *dir);
-size_t	*length_dir(t_dir *dir);
+size_t	length_dir(t_dir *dir);
+
+///////////////////////////////////////////////////////
+
+void	display_lst_dir(t_dir *dir);
 
 #endif
