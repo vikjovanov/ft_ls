@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 09:23:10 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/08 09:23:11 by vjovanov         ###   ########.fr       */
+/*   Created: 2019/01/17 19:59:29 by vjovanov          #+#    #+#             */
+/*   Updated: 2019/01/17 19:59:30 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-/*
-** Definition of "extern char g_param" in header file
-*/
-
-t_global	global = {0, NULL, NULL};
-
-int		main(int argc, char **argv)
+void	no_such_error(const char *name_error)
 {
-	global.lst_dir = new_dir();
-	global.lst_file = new_file();
-	arg_checker(argc, argv);
-	ft_printf("params : %#b\n\n", global.params);
-	display_lst_dir(global.lst_dir);
-	display_lst_file(global.lst_file);
-	return (0);
+	if (ft_strequ(name_error, ""))
+		name_error = "fts_open";
+	ft_putstr_fd("ft_ls: ", 2);
+	perror(name_error);
+	if (ft_strequ(name_error, "fts_open"))
+		exit(EXIT_FAILURE);
 }

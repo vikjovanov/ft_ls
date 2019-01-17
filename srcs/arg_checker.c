@@ -12,49 +12,31 @@
 
 #include "ft_ls.h"
 
-static int	check_quotes(char **argv)
+static int	fill_dir_or_file(char **argv)
 {
-	int i;
+	struct stat try_dirfile;
+	int			i;
 
-	i = 0;
-	while (argv[i])
-	{
-		if (ft_strequ(argv[i], ""))
+	i = -1;
+	argv = order_by_lexic(argv);
+	while (argv[++i])
+		if (stat(argv[i], &try_dirfile) != -1)
 		{
-			opendir(argv[i]);
-			ft_printf("ft_ls: fts_open: ");
-			perror("");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
+			if (S_ISDIR(try_dirfile.st_mode))
+			{
+				if ((global.lst_dir = insert_back_dir(global.lst_dir, argv[i], NULL)) == NULL)
+					return (0);
+			}
+			else
+			{
 
-static int	fill_dir_or_file(char **argv, char *params, t_dir *lst_dir)
-{
-	DIR *dir;
-	struct stat try_file;
-
-	if (check_quotes(argv))
-		exit(EXIT_FAILURE);
-	if ((dir = opendir(params)) != NULL)
-	{
-		if ((lst_dir = insert_back_dir(lst_dir, params, "./")) == NULL)
-			return (0);
-	}
-	else
-	{
-		if (stat(params, &try_file) == -1)
-		{
-			ft_printf("ft_ls: %s: ", params);
-			perror("");
+				if ((global.lst_file = insert_back_file(global.lst_file, &try_dirfile)) == NULL)
+					return (0);
+			}
 		}
-		//else
-			//ECRIRE DANS STRUCT FICHIER
-	}
+		else
+			no_such_error(argv[i]);
 	return (1);
-
 }
 
 static int	fill_params(char *params)
@@ -67,7 +49,7 @@ static int	fill_params(char *params)
 	while (params[i + 1])
 	{
 		if ((ft_strchr(ACCEPTED_PARAMS, params[i + 1])) != NULL)
-			g_params |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params[i + 1]));
+			global.params |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params[i + 1]));
 		else
 		{
 			ft_printf("ft_ls: illegal option -- %c\n", params[i + 1]);
@@ -76,21 +58,21 @@ static int	fill_params(char *params)
 		}
 		i++;
 	}
-	//ft_printf("%#b\n", g_params);
 	return (1);
 }
 
-int			arg_checker(int argc, char **argv, t_dir *lst_dir)
+int			arg_checker(int argc, char **argv)
 {
 	int		params_step;
 
 	params_step = 0;
 	if (argc < 2)
 	{
-		if ((lst_dir = insert_front_dir(lst_dir, "./", NULL)) == NULL)
+		if ((global.lst_dir = insert_front_dir(global.lst_dir, "./", NULL)) == NULL)
 			return (-1);
 	}
 	else
+	{
 		while (*(++argv) != NULL)
 			if (((*argv)[0]) == '-' && ft_strlen(*argv) > 1 && params_step == 0)
 			{
@@ -98,9 +80,8 @@ int			arg_checker(int argc, char **argv, t_dir *lst_dir)
 					params_step = 1;
 			}
 			else
-			{
-				fill_dir_or_file(argv, *argv, lst_dir);
-				params_step = 1;
-			}
+				break ;
+		fill_dir_or_file(&(*argv));
+	}
 	return (1);
 }

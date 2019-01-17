@@ -14,22 +14,9 @@
 
 t_file	*new_file(void)
 {
-	t_file *new;
-
-	if ((new = malloc(sizeof(*new))) == NULL)
-		return (NULL);
-	new->filemode = NULL;
-	new->permission = 0;
-	new->number_of_link = 0;
-	new->owner_name = NULL;
-	new->group_name = NULL;
-	new->size_byte = 0;
-	new->last_modif = 0;
-	new->pathname = NULL;
-	new->next = NULL;
-	return (new);
+	return (NULL);
 }
-
+/*
 t_file	*insert_front_file(t_file *dir, char *path, char *parent)
 {
 	t_dir *new;
@@ -47,6 +34,7 @@ t_file	*insert_front_file(t_file *dir, char *path, char *parent)
 	return (new);
 
 }
+*/
 /*
 t_dir	*insert_after_elem_file(t_dir *dir, t_dir *ref_dir,
 	char *path, char *parent)
@@ -69,48 +57,77 @@ t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
 
 }
 */
-t_dir	*insert_back_file(t_dir *dir, char *path, char *parent)
-{
-	t_dir *new;
-	t_dir *tmp;
 
-	if (path == NULL)
-		return (NULL);
+static char	set_file_type (struct stat *file)
+{
+	char	mode;
+
+	mode = 0;
+	mode = ((file->st_mode & S_IFMT) == S_IFREG ? '-' : mode);
+	mode = ((file->st_mode & S_IFMT) == S_IFCHR ? 'c' : mode);
+	mode = ((file->st_mode & S_IFMT) == S_IFBLK ? 'b' : mode);
+	mode = ((file->st_mode & S_IFMT) == S_IFIFO ? 'p' : mode);
+	mode = ((file->st_mode & S_IFMT) == S_IFSOCK ? 's' : mode);
+	mode = ((file->st_mode & S_IFMT) == S_IFLNK ? 'l' : mode);
+	return (mode);
+}
+
+t_file *fill_link(t_file *new, struct stat *file)
+{
+	struct passwd *usr_info;
+	struct group *grp_info;
+	time_t timer;
+
+	usr_info = getpwuid(file->st_uid);
+	grp_info = getgrgid(file->st_gid);
+	new->file_type = set_file_type(file);
+	new->permission = file->st_mode;
+	new->number_of_link = file->st_nlink;
+	new->owner_name = usr_info->pw_name;
+	new->group_name = grp_info->gr_name;
+	new->size_byte = file->st_size;
+	new->last_modif = time(&timer);
+	new->next = NULL;
+	return (new);
+}
+
+t_file	*insert_back_file(t_file *lst_file, struct stat *file)
+{
+	t_file *new;
+	t_file *tmp;
+
 	if ((new = malloc(sizeof(*new))) == NULL)
 		return (NULL);
-	new->parent = parent;
-	new->pathname = path;
-	new->next = NULL;
-	if (is_empty_dir(dir))
+	new = fill_link(new, file);
+	if (is_empty_file(lst_file))
 		return (new);
-	tmp = dir;
+	tmp = lst_file;
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = new;
-	return (dir);
+	return (lst_file);
 }
 
 
 ///////////////////////////////////////////////////////
 
-void	display_lst_file(t_dir *dir)
+void	display_lst_file(t_file *file)
 {
-	t_dir *tmp;
+	t_file *tmp;
 
-	tmp = dir;
-	if (is_empty_dir(dir))
+	tmp = file;
+	while (file != NULL)
 	{
-		printf("--\n");
-		printf("(null)\n");
-		printf("--\n");
+		printf("\n-- file --\n");
+		printf("type: %c\n", file->file_type);
+		printf("permission: %ld\n", file->permission);
+		printf("number link: %d\n", file->number_of_link);
+		printf("owner: %s\n", file->owner_name);
+		printf("group: %s\n", file->group_name);
+		printf("size_byte: %ld\n", file->size_byte);
+		printf("last_modif: %s", ctime(&(file->last_modif)));
+		printf("----------\n");
+		file = file->next;
 	}
-	while (dir != NULL)
-	{
-		printf("--\n");
-		printf("path: %s\n", dir->pathname);
-		printf("parent: %s\n", dir->parent);
-		printf("--\n");
-		dir = dir->next;
-	}
-	dir = tmp;
+	file = tmp;
 }

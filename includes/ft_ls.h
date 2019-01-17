@@ -24,6 +24,7 @@
 #include <fcntl.h> 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #include "../libft/includes/libft.h"
 
@@ -43,17 +44,15 @@
 ** bit 16: -t
 */
 
-extern char g_params;
-
 typedef struct 		s_file 
 {
-	char			file_mode;
-	short			permission;
+	char			file_type;
+	long			permission;
 	int				number_of_link;
 	char			*owner_name;
 	char			*group_name;
 	long			size_byte;
-	time_t			*last_modif;
+	time_t			last_modif;
 	char			*pathname;
 	struct s_file	*next;
 }					t_file;
@@ -65,11 +64,23 @@ typedef struct 		s_dir
 	struct s_dir	*next;
 }					t_dir;
 
+
+typedef struct 		s_global
+{
+	char			params;
+	t_file			*lst_file;
+	t_dir			*lst_dir;
+}					t_global;
+
+extern t_global global;
+
+void	no_such_error(const char *format);
+
 /*
 ** arg_checker
 */
 
-int		arg_checker(int argc, char **argv, t_dir *lst_dir);
+int		arg_checker(int argc, char **argv);
 
 /*
 ** generic_func
@@ -97,5 +108,24 @@ size_t	length_dir(t_dir *dir);
 ///////////////////////////////////////////////////////
 
 void	display_lst_dir(t_dir *dir);
+
+/*
+** lst_dir
+*/
+
+t_file	*new_file(void);
+t_file	*insert_back_file(t_file *lst_file, struct stat *file);
+void	display_lst_file(t_file *file);
+int		is_empty_file(t_file *file);
+t_file	*del_back_file(t_file *file);
+t_file	*del_front_file(t_file *file);
+t_file	*clear_file(t_file *file);
+size_t	length_file(t_file *file);
+
+/*
+** order
+*/
+
+char		**order_by_lexic(char **str);
 
 #endif

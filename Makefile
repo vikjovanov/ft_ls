@@ -15,16 +15,27 @@ NAME= ft_ls
 LIBFT_NAME= libft
 LIBFT_LIB= libft/libft.a
 
-SRCS= ft_ls.c arg_checker.c generic_func.c
-SRCS_DIR= $(addprefix srcs/, $(SRCS))
+SRCS= ft_ls.c arg_checker.c generic_func.c order_by.c error.c
+SRCS_LIST_FUNC= lst_dir.c lst_dir_ext.c lst_file.c lst_file_ext.c
 
-SRCS_LIST_FUNC= lst_dir.c lst_dir_ext.c
+SRCS_DIR= $(addprefix srcs/, $(SRCS))
 SRCS_LIST_FUNC_DIR = $(addprefix srcs/list_func/, $(SRCS_LIST_FUNC))
 
 INCLUDES= -Iincludes -Ilibft/includes
 
-FLAGS= -Wall -Werror -Wextra
+CC= gcc
 
-$(NAME):
+CFLAGS= -Wall -Werror -Wextra
+
+all:
 	@make -C libft/ && make -C libft/ clean
-	@gcc $(FLAGS) $(SRCS_DIR) $(SRCS_LIST_FUNC_DIR) $(LIBFT_LIB) $(INCLUDES)
+	@$(CC) $(CFLAGS) $(SRCS_DIR) $(SRCS_LIST_FUNC_DIR) $(LIBFT_LIB) $(INCLUDES) -o ft_ls
+
+
+
+clean: 
+
+
+fclean: 
+
+re: 

@@ -14,14 +14,7 @@
 
 t_dir	*new_dir(void)
 {
-	t_dir *new;
-
-	if ((new = malloc(sizeof(*new))) == NULL)
-		return (NULL);
-	new->pathname = NULL;
-	new->parent = NULL;
-	new->next = NULL;
-	return (new);
+	return (NULL);
 }
 
 t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
