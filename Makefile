@@ -16,26 +16,52 @@ LIBFT_NAME= libft
 LIBFT_LIB= libft/libft.a
 
 SRCS= ft_ls.c arg_checker.c generic_func.c order_by.c error.c
-SRCS_LIST_FUNC= lst_dir.c lst_dir_ext.c lst_file.c lst_file_ext.c
+SRCS+= list_func/lst_dir.c list_func/lst_dir_ext.c \
+		list_func/lst_file.c list_func/lst_file_ext.c
+SRCS_DIR=srcs/
 
-SRCS_DIR= $(addprefix srcs/, $(SRCS))
-SRCS_LIST_FUNC_DIR = $(addprefix srcs/list_func/, $(SRCS_LIST_FUNC))
+
+OBJ= $(SRCS:.c=.o)
+OBJ_DIR=obj/
+OBJS_DIR=$(addprefix $(OBJ_DIR),$(OBJ))
 
 INCLUDES= -Iincludes -Ilibft/includes
 
 CC= gcc
-
 CFLAGS= -Wall -Werror -Wextra
 
+GCCRESET=\033[0m
+GCCBLUE=\033[1;36m
+GCCBRED=\033[1;91m
+GCCYELLOW=\033[1;33m
+GCCGREEN=\033[1;32m
+GCCRED=\033[1;31m
+GCCMAGENTA=\033[1;35m
+
 all:
-	@make -C libft/ && make -C libft/ clean
-	@$(CC) $(CFLAGS) $(SRCS_DIR) $(SRCS_LIST_FUNC_DIR) $(LIBFT_LIB) $(INCLUDES) -o ft_ls
+	@mkdir -p $(OBJ_DIR)
+	@make $(NAME)
 
+$(NAME): $(OBJS_DIR)
+	@make -C libft/
+	@$(CC) $(CFLAGS) $(OBJS_DIR) $(LIBFT_LIB) $(INCLUDES) -o $(NAME)
+	@echo "$(GCCMAGENTA)$(basename $(NAME)): $(GCCRESET)$(GCCGREEN)SUCCESS$(GCCRESET)"
 
+$(OBJ_DIR)%.o: $(SRCS_DIR)%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "$(GCCMAGENTA)$(basename $(NAME)): $(GCCRESET)Compilation $(GCCGREEN)-- $(basename $(notdir $<))$(GCCRESET)"
 
 clean: 
+	@make -C libft/ clean
+	@rm -Rf $(NAME)
+	@echo "$(GCCMAGENTA)$(basename $(NAME)): $(GCCRESET)Suppression $(GCCRED)-- $(OBJ_DIR)$(GCCRESET)"
 
+fclean:
+	@make -C libft/ fclean
+	@echo "$(GCCMAGENTA)$(basename $(NAME)): $(GCCRESET)Suppression $(GCCRED)-- $(NAME)$(GCCRESET)"
+	@rm -Rf $(NAME)
+	@echo "$(GCCMAGENTA)$(basename $(NAME)): $(GCCRESET)Suppression $(GCCRED)-- $(OBJ_DIR)$(GCCRESET)"
+	@rm -Rf $(OBJ_DIR)
 
-fclean: 
-
-re: 
+re: fclean all
