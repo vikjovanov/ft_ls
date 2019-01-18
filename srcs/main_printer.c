@@ -12,9 +12,9 @@
 
 #include "ft_ls.h"
 
-void	regular_print(t_file *lst_file, int	print_mult_dir, t_field min_field)
+void	regular_print(t_file *lst_file, int	print_mult_dir, t_field *min_field)
 {
-	printf("%s\n", );
+	printf("%d %s  %s  %ld %s %s %s %s\n", lst_file->number_of_link, lst_file->);
 }
 
 t_field	*find_min_field_width(t_file *file)
@@ -28,12 +28,13 @@ t_field	*find_min_field_width(t_file *file)
 	while (tmp != NULL)
 	{
 		if ((int)ft_strlen(file->number_of_link) > min_field_width->n_link)
-			min_field_width->n_link = (int)ft_strlen(file->number_of_link);
+			min_field_width->n_link = (int)ft_nblen(file->number_of_link);
 		if ((int)ft_strlen(file->owner_name) > min_field_width->user_name)
 			min_field_width->user_name = (int)ft_strlen(file->owner_name);
 		if ((int)ft_strlen(file->group_name) > min_field_width->group_name)
 			min_field_width->group_name = (int)ft_strlen(file->group_name);
-		if ((int)ft_strlen(file->size_byte) > ())
+		if ((int)ft_strlen(file->size_byte) > min_field_width->size_byte)
+			min_field_width->size_byte = (int)nb_len(file->size_byte);
 		tmp = tmp->next;
 	}
 	return (min_field_width);
