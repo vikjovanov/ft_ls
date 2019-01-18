@@ -24,13 +24,13 @@ static int	fill_dir_or_file(char **argv)
 		{
 			if (S_ISDIR(try_dirfile.st_mode))
 			{
-				if ((global.lst_dir = insert_back_dir(global.lst_dir, argv[i], NULL)) == NULL)
+				if ((g_global.lst_dir = insert_back_dir(g_global.lst_dir, argv[i], NULL)) == NULL)
 					return (0);
 			}
 			else
 			{
 
-				if ((global.lst_file = insert_back_file(global.lst_file, &try_dirfile)) == NULL)
+				if ((g_global.lst_file = insert_back_file(g_global.lst_file, &try_dirfile, argv[i])) == NULL)
 					return (0);
 			}
 		}
@@ -49,7 +49,7 @@ static int	fill_params(char *params)
 	while (params[i + 1])
 	{
 		if ((ft_strchr(ACCEPTED_PARAMS, params[i + 1])) != NULL)
-			global.params |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params[i + 1]));
+			g_global.params |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params[i + 1]));
 		else
 		{
 			ft_printf("ft_ls: illegal option -- %c\n", params[i + 1]);
@@ -68,7 +68,7 @@ int			arg_checker(int argc, char **argv)
 	params_step = 0;
 	if (argc < 2)
 	{
-		if ((global.lst_dir = insert_front_dir(global.lst_dir, "./", NULL)) == NULL)
+		if ((g_global.lst_dir = insert_front_dir(g_global.lst_dir, "./", NULL)) == NULL)
 			return (-1);
 	}
 	else
@@ -81,7 +81,8 @@ int			arg_checker(int argc, char **argv)
 			}
 			else
 				break ;
-		fill_dir_or_file(&(*argv));
+		if (*argv != NULL)
+			fill_dir_or_file(&(*argv));
 	}
 	return (1);
 }

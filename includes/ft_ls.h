@@ -36,14 +36,6 @@
 #define PARAM_T 16
 #define ACCEPTED_PARAMS "lraRt"
 
-/*
-** bit 1 : -l
-** bit 2 : -r
-** bit 4 : -a
-** bit 8 : -R
-** bit 16: -t
-*/
-
 typedef struct 		s_file 
 {
 	char			file_type;
@@ -52,7 +44,10 @@ typedef struct 		s_file
 	char			*owner_name;
 	char			*group_name;
 	long			size_byte;
-	time_t			last_modif;
+	char			*modif_month;
+	char			*modif_day;
+	char			*modif_hours;
+	char			*modif_years;
 	char			*pathname;
 	struct s_file	*next;
 }					t_file;
@@ -64,6 +59,22 @@ typedef struct 		s_dir
 	struct s_dir	*next;
 }					t_dir;
 
+typedef struct 		s_field
+{
+	int				n_link;
+	void			user_name;
+	void			group_name;
+	void			size_byte;
+}					t_field;
+
+/*
+** char params
+** bit 1 : -l
+** bit 2 : -r
+** bit 4 : -a
+** bit 8 : -R
+** bit 16: -t
+*/
 
 typedef struct 		s_global
 {
@@ -72,7 +83,7 @@ typedef struct 		s_global
 	t_dir			*lst_dir;
 }					t_global;
 
-extern t_global global;
+extern t_global g_global;
 
 void	no_such_error(const char *format);
 
@@ -110,11 +121,11 @@ size_t	length_dir(t_dir *dir);
 void	display_lst_dir(t_dir *dir);
 
 /*
-** lst_dir
+** lst_file
 */
 
 t_file	*new_file(void);
-t_file	*insert_back_file(t_file *lst_file, struct stat *file);
+t_file	*insert_back_file(t_file *lst_file, struct stat *file, char *file_name);
 void	display_lst_file(t_file *file);
 int		is_empty_file(t_file *file);
 t_file	*del_back_file(t_file *file);

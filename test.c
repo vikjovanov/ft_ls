@@ -34,7 +34,7 @@ int 	main(int argc, char **argv)
 
 	if (argc < 2)
 		return 0;	
-	if (stat(argv[1], &v_file) == -1)
+	if (lstat(argv[1], &v_file) == -1)
 	{
 		perror("stat : ");
 		return (0);
@@ -68,6 +68,9 @@ int 	main(int argc, char **argv)
 	printf("nb 512 all: %lld\n", v_file.st_blocks);
 	printf("timestamps: %ld\n", time(&timer));
 	printf("date times: %s\n", ctime(&timer)); //format de date constamment identique
+	printf("time : %ld\n", v_file.st_mtime);
+
+
 }
 
 /*

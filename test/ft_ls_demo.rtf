@@ -1,0 +1,148 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red0\green1\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c392\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww22300\viewh21480\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ft_ls:\
+\
+Parametres demandes : -l -R -a -r -t\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf0 \
+Fonctions autoris\'e9s connus : \
+	- write\
+	- malloc\
+	- free\
+	- exit\
+\
+Fonctions autoris\'e9s non connus :\
+	- opendir\
+		\'93ouvre le dossier s\'e9lectionne et retourne un pointeur sur le premier element de ce dossier\'94\
+	- readdir\
+		\'93retourne un pointeur sur une structure \'91dirent\'92 poss\'e9dant toutes les infos du fichier qui est lu. Chaque structure est \'e9cras\'e9 a chaque nouvel appel de readdir\'94\
+	- closedir\
+		\'93ferme le dossier pr\'e9c\'e9demment ouvert grace a opendir\'94\
+	- stat\
+		\'93obtient l\'92\'e9tat d\'92un fichier\'94\
+		struct stat sizeof elements:\
+			dev_t: 4 (int)\
+			ino_t: 8 (long long)\
+			mode_t: 2 (int)\
+			nlink_t: 2 (int) \
+			uid_t: 4 (int)\
+			gid_t: 4 (int)\
+			off_t: 8 (long long)\
+			blksize_t: 4 (int)\
+			blkcnt_t: 8 (long long)\
+			struct timespec: non detecte par GNU mac\
+	- lstat\
+		\'93obtient l\'92etat d\'92un fichier. Cependant, si le path est un lien symbolique, il donne l\'92\'e9tat du lien lui-meme et non du fichier vise par ce lien\'94\
+	- getpwuid\
+		renvoie un pointeur sur une struct contenant les divers infos enregistres correspondant a l\'92ID user \'93uid\'94 (uid recuperable grace a la fct stat)\
+			\cf2 \expnd0\expndtw0\kerning0
+*pw_name;   username char*\
+			*pw_passwd; passed char*\
+			pw_uid;    ID user uid_t\
+			pw_gid;    ID group gid_t\
+			*pw_gecos;  real name user char *\
+			*pw_dir;    connexion directory char*\
+			*pw_shell; Shell connexion program char*
+\f1 \
+
+\f0 \cf0 \kerning1\expnd0\expndtw0 \
+	- getgrgid\
+		renvoie un pointeur sur une struct contenant les divers infos enregistres correspondant au groupe \'93gid\'94 (gid recuperable grace a la fct stat)\
+	- listxattr\
+		ecris dans la chaine de caract\'e8re buff envoye en param\'e8tre la liste des attributs \'e9tendues du fichier path.\
+			exemple:\
+				com.Apple.finderInfo\
+				\'85..\
+	- getxattr\
+		lis la valeur d\'92un attribut \'e9tendu r\'e9cup\'e9r\'e9, par exemple, grace a listxattr\
+	- time\
+		renvoie l\'92heure actuelle sous forme du nombre de secondes \'e9coul\'e9es depuis le 1 janvier 1970 a minuit pile.\
+			time_t: 8 (long)\
+	- ctime\
+		recupere une valeur repr\'e9sentant l\'92heure actuelle en secondes \'e9coul\'e9s depuis le 1 janvier 1970 a minuit (fct \'91time\'92) et la convertir en binaire ascii plus comprehensible par l\'92homme\
+	- readlink\
+		lis le contenu d\'92un lien symbolique\
+	- perror\
+		affiche un message sur la sortir d\'92erreur standard, d\'e9crivant la derni\'e8re erreur rencontree durant un appel syst\'e8me ou une fonction de biblioth\'e8que.\
+		Permet donc d\'92afficher un message d\'92erreur syst\'e8me.\
+	- strerror\
+		permet d\'92obtenir le libelle d\'92un numero d\'92erreur.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+-l = Le format long. Affiche les details de chaque fichier et dossiers present dans le repertoire actuel.\
+	Affich\'e9 de la fa\'e7on suivante:\
+		Mode de fichier | nombre liens | nom du cr\'e9ateur | nom du groupe | nombre de bytes fichier | Mois abr\'e9g\'e9 | Jour de la derni\'e8re modif. | heure de la derni\'e8re modif. | minutes de la derni\'e8re modif. | nom du fichier\
+\
+	Mode de fichier : \
+		b = Fichier de bloc special \
+		c = Fichier a caract\'e8re sp\'e9ciaux\
+		d = Dossier\
+		l. = Lien symbolique\
+		s = Lien de socket\
+		p = FIFO\
+		- = Fichier normal	\
+\
+		3 blocs de 3 caract\'e8res suivant:\
+		#rwxrwxrwx : (Mode de fichier | Permissions admins | permissions du groupe | autres permissions\'8b)		\
+		Similaire a tous les blocs:\
+			r = autorisation de lecture (readable). Si -, alors pas autorise a lire\
+			w =  autorisation d\'92\'e9criture (writable). Si -, alors pas autorise a \'e9crire\
+\
+			S =	(si dans permission admin) le fichier est non executable et set-user-ID est defini\
+				(si dans permission de groupe) le fichier non executable et set-group-ID est defini\
+			s =	(si dans permission admin) le fichier est executable et set-user-ID est defini\
+				(si dans permission de groupe) le fichier est executable et set-group-ID est d\'e9fini\
+			x = 	le fichier est executable ou le dossier est trouvable dans les recherches\
+			- =	le fichier n\'92est ni lisible, ecrivable ou executable. Aucun set-user-ID ou set-group-ID n\'92est defini.\
+\
+		Uniquement pour le dernier bloc (autre permissions):\
+			T =	le \'93sticky\'94 bit est defini (mode 1000), mais ne poss\'e8de pas de permission d\'92execution ou de recherche\
+			t =	le \'93sticky\'94 bit est defini (mode 1000) et possede les permissions d\'92execution ou de recherche\
+\
+\
+-R = affiche r\'e9cursivement la liste de tous les fichiers et dossiers contenu a partir de la racine de la commande\
+\
+-r = Inverse l\'92ordre du triage d\'92affichage pour obtenir un ordre lexicographique invers\'e9 ou les fichiers les plus anciens en premier\
+\
+-t = Tri l\'92affichage par date de derni\'e8re modifications avant de faire un tri lexicographique (dans le cas ou plusieurs fichiers ont des dates de modifications similaires)\
+\
+-a = Inclut dans l\'92affichage les fichiers ou dossiers dont le nom commencent par un \'91.\'92 (point)\
+\
+\
+Ordre de tri :\
+	lexicographique -> par date -> reverse\
+	Si -t active, tri lexicographique ignore.\
+	-r active, se fait toujours en fin de tri, fait juste un reverse des different tri qui ont \'e9t\'e9 fait juste avant\
+\
+\
+CAS SPECIFIQUES A GERER: \
+	Si param\'e8tre vide avec double quote (\'93\'94), le ls ne doit plus rien faire.\
+	si double tiret en param\'e8tre, cela veut dire qu\'92on stoppe la lecture de param\'e8tres par exemple, si j\'92ai un dossier nomm\'e9 -l, pour pouvoir afficher son contenu, je vais \'e9crire \'93ls -la \'97 -l\'94\
+	attention avec gid et uid qui peuvent provoquer un segfault en cas de retour NULL, si retour NULL afficher son numero.\
+	ordre different si argument ou pas\
+	dates dans le futur et dates dans le passe de plus de 6 mois, afficher l\'92annee\
+\
+\
+Que se passe-t-il ?\
+\
+ft_ls est appel\'e9, il commence par aller stocker les differents param\'e8tres envoy\'e9s commencent par un tiret -;\
+Il s\'92occupe ensuite de stocker tous les param\'e8tres de dossiers qui auraient pu \'eatre rentre, a partir de la il fait un premier tri afin de trier tous les param\'e8tres envoy\'e9s par ordre lexicographique, il teste de les ouvrir un par un, si il n\'92y arrive pas, il \'e9crit directement l\'92erreur a l\'92\'e9cran. Il s\'92occupe ensuite de retirer de son stockage tout ce qui a cause une erreur. \
+Si des fichiers ont ete envoye \'e9galement en param\'e8tres, il va \'e9galement commencer par les trier par ordre lexicographique. Il les afficheras ensuite en tout premier lieu juste apr\'e8s les diff\'e9rentes erreurs provoques dut aux ouvertures de dossiers.\
+\
+Si -R active, affiche tous de fa\'e7on recursive. Si plusieurs dossiers a afficher, rajouter au dessus de chaque bloc d\'92affichages le path du dossier dans lequel se trouve les different fichiers.\
+\
+\
+Ordre de travail :\
+	arg_checker\
+		stockage des param\'e8tres ou affichage d\'92une illegal option si param\'e8tres non acceptes.\
+		stockages des different param\'e8tres directory donnes.\
+		tri des differents directory dans le stockage.\
+		tentative d\'92ouverture de chaque directory. Si erreur a l\'92ouverture, afficher l\'92erreur a l\'92\'e9cran grace a un ft_printf et perror et retirer du stockage\
+		si fichier passes en param\'e8tres, tenter de les ouvrir, si erreur, afficher erreur et retirer du stockage.\
+		quand toutes ces \'e9tapes finis, commencer par vider le stockage des fichiers en les affichants directement en premier apr\'e8s les erreurs.\
+		}

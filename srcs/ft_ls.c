@@ -13,18 +13,18 @@
 #include "ft_ls.h"
 
 /*
-** Definition of "extern char g_param" in header file
+** Definition of "extern t_global g_global" in header file
 */
 
-t_global	global = {0, NULL, NULL};
+t_global	g_global = {0, NULL, NULL};
 
 int		main(int argc, char **argv)
 {
-	global.lst_dir = new_dir();
-	global.lst_file = new_file();
+	g_global.lst_dir = new_dir();
+	g_global.lst_file = new_file();
 	arg_checker(argc, argv);
-	ft_printf("params : %#b\n\n", global.params);
-	display_lst_dir(global.lst_dir);
-	display_lst_file(global.lst_file);
+	ft_printf("params : %#b\n\n", g_global.params);
+	display_lst_dir(g_global.lst_dir);
+	display_lst_file(g_global.lst_file);
 	return (0);
 }

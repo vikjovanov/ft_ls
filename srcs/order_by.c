@@ -27,6 +27,8 @@ char		**order_by_lexic(char **str)
 	int		i;
 
 	ordered = 0;
+	if (str == NULL)
+		return (NULL);
 	while (ordered != 1)
 	{
 		i = 0;

@@ -15,7 +15,7 @@ NAME= ft_ls
 LIBFT_NAME= libft
 LIBFT_LIB= libft/libft.a
 
-SRCS= ft_ls.c arg_checker.c generic_func.c order_by.c error.c
+SRCS= ft_ls.c arg_checker.c generic_func.c order_by.c error.c main_printer.c
 SRCS+= list_func/lst_dir.c list_func/lst_dir_ext.c \
 		list_func/lst_file.c list_func/lst_file_ext.c
 SRCS_DIR=srcs/
@@ -54,7 +54,7 @@ $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 
 clean: 
 	@make -C libft/ clean
-	@rm -Rf $(NAME)
+	@rm -Rf $(OBJ_DIR)
 	@echo "$(GCCMAGENTA)$(basename $(NAME)): $(GCCRESET)Suppression $(GCCRED)-- $(OBJ_DIR)$(GCCRESET)"
 
 fclean:
