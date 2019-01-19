@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.19.be>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 08:39:00 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/08 08:39:01 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/19 17:13:30 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ typedef struct 		s_dir
 typedef struct 		s_field
 {
 	int				n_link;
-	void			user_name;
-	void			group_name;
-	void			size_byte;
+	int				user_name;
+	int				group_name;
+	int				size_byte;
 }					t_field;
 
 /*
@@ -138,5 +138,11 @@ size_t	length_file(t_file *file);
 */
 
 char		**order_by_lexic(char **str);
+
+/*
+** print
+*/
+
+void	dispatch_print(t_file *lst_file, int print_mult_dir);
 
 #endif

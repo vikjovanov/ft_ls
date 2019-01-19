@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_checker.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.19.be>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:17:41 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/10 16:17:42 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/19 17:49:24 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int			arg_checker(int argc, char **argv)
 			else
 				break ;
 		if (*argv != NULL)
-			fill_dir_or_file(&(*argv));
+			if (fill_dir_or_file(&(*argv)) == 0)
+				return (0);
 	}
 	return (1);
 }
