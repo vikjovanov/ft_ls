@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <vjovanov@student.19.be>          +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 08:39:00 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 17:13:30 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/19 23:25:21 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct 		s_file
 	char			*owner_name;
 	char			*group_name;
 	long			size_byte;
+	time_t			modif_timestamps;
 	char			*modif_month;
 	char			*modif_day;
 	char			*modif_hours;
@@ -85,7 +86,17 @@ typedef struct 		s_global
 
 extern t_global g_global;
 
+#define LST_DIR (g_global.lst_dir)
+#define LST_FILE (g_global.lst_file)
+#define PARAMS (g_global.params)
+
+
+/*
+** error
+*/
+
 void	no_such_error(const char *format);
+void	generic_error(const char *error_element);
 
 /*
 ** arg_checker
@@ -139,10 +150,21 @@ size_t	length_file(t_file *file);
 
 char		**order_by_lexic(char **str);
 
+int		lst_order_file(t_file *lst_file);
+
+
 /*
 ** print
 */
 
 void	dispatch_print(t_file *lst_file, int print_mult_dir);
+
+
+
+
+
+
+
+int		recurse_nav(void);
 
 #endif

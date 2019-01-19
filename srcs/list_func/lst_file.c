@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:44:18 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/14 14:44:19 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/19 23:06:40 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static int	fill_last_modif(t_file *new, struct stat *file)
 	timer = time(&timer);
 	new->modif_hours = NULL;
 	new->modif_years = NULL;
+	new->modif_timestamps = file->st_mtime;
 	if ((diff = timer - file->st_mtime) < 0)
 		diff *= -1;
 	if ((timer - file->st_mtime) < 15552000)
@@ -95,6 +96,7 @@ static char	set_file_type(struct stat *file)
 	mode = ((file->st_mode & S_IFMT) == S_IFIFO ? 'p' : mode);
 	mode = ((file->st_mode & S_IFMT) == S_IFSOCK ? 's' : mode);
 	mode = ((file->st_mode & S_IFMT) == S_IFLNK ? 'l' : mode);
+	mode = ((file->st_mode & S_IFMT) == S_IFDIR ? 'd' : mode);
 	return (mode);
 }
 
@@ -103,9 +105,9 @@ t_file *fill_link(t_file *new, struct stat *file, char *file_name)
 	struct passwd *usr_info;
 	struct group *grp_info;
 
-	usr_info = getpwuid(file->st_uid);
-	grp_info = getgrgid(file->st_gid);
-	new->file_type = set_file_type(file);
+	usr_info = getpwuid(file->st_uid);	
+	grp_info = getgrgid(file->st_gid);	
+	new->file_type = set_file_type(file);	
 	new->permission = file->st_mode;
 	new->number_of_link = file->st_nlink;
 	new->owner_name = usr_info->pw_name;
@@ -153,6 +155,8 @@ void	display_lst_file(t_file *file)
 		printf("owner: %s\n", file->owner_name);
 		printf("group: %s\n", file->group_name);
 		printf("size_byte: %ld\n", file->size_byte);
+		printf("modif_timestamps: %ld\n", file->modif_timestamps);
+		printf("modif_ctime: %s\n", ctime(&(file->modif_timestamps)));
 		//printf("last_modif: %s", ctime(&(file->last_modif)));
 		printf("----------\n");
 		file = file->next;

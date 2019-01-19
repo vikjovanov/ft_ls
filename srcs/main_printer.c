@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_printer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <vjovanov@student.19.be>          +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 10:01:28 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 17:40:50 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/19 22:25:53 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	regular_print(t_file *lst_file, int	print_mult_dir, t_field *min_field)
 {
-	if (print_mult_dir)
-		printf("lo\n");
+	if (print_mult_dir == 3)
+		printf("slu\n");
 	if (g_global.params & PARAM_L)
 	{
 	printf("%*d ", min_field->n_link, lst_file->number_of_link);
@@ -62,14 +62,18 @@ t_field	*find_min_field_width(t_file *file)
 void	dispatch_print(t_file *lst_file, int print_mult_dir)
 {
 	t_field *min_field_width;
+	t_file 	*tmp;
 
 	min_field_width = find_min_field_width(lst_file);
+	tmp = NULL;
 	while (lst_file != NULL)
 	{
 		if (ft_strchr("spdl-", lst_file->file_type))
 			regular_print(lst_file, print_mult_dir, min_field_width);
 		//else if (ft_strchr("bc", lst_file->file_type))
 			//special_print(lst_file, print_mult_dir, min_field_width);
+		tmp = lst_file;
 		lst_file = lst_file->next;
+		del_front_file(tmp);
 	}
 }
