@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 19:14:23 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 17:58:09 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 21:22:29 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@ int		fill_lst_file(DIR *current_dir, char *path)
 
 	if ((dir_element = readdir(current_dir)) != NULL)
 	{
-		//if (!(PARAMS & PARAM_A) && dir_element->d_name[0] == '.')
-		//	return (1);
+		if (!(PARAMS & PARAM_A) && dir_element->d_name[0] == '.')
+			return (1);
 		if ((pathname = ft_strjoin(path, dir_element->d_name)) == NULL)
 			return (0);
-		if (stat(pathname, &infos_element) == -1)
-			if (lstat(pathname, &infos_element) == -1)
-				generic_error(dir_element->d_name);
+		if (lstat(pathname, &infos_element) == -1)
+			generic_error(dir_element->d_name);
 		if ((LST_FILE = insert_back_file(LST_FILE, &infos_element,
 				dir_element->d_name, pathname)) == NULL)
 			return (0);
@@ -62,9 +61,6 @@ int		recurse_nav(void)
 				return (0);
 		}
 	else
-	{
-		printf("cette erreur\n");
 		generic_error(LST_DIR->pathname);
-	}
 	return (1);
 }

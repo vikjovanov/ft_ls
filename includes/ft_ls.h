@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 08:39:00 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 17:27:28 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 21:17:07 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct 		s_file
 	char			*modif_hours;
 	char			*modif_years;
 	char			*symlink;
+	long long		block_512kb;
 	char			*pathname;
 	struct s_file	*next;
 }					t_file;

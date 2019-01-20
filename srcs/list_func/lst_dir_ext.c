@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_dir_ext.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 11:35:46 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/11 11:35:47 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 19:58:45 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ t_dir	*del_back_dir(t_dir *dir)
 		tmp2 = dir;
 		dir = dir->next;
 	}
-	free(dir);
-	dir = NULL;
+	ft_memdel((void**)&dir->parent);
+	ft_memdel((void**)&dir->pathname);
+	dir->next = NULL;
+	ft_memdel((void**)&dir);
 	tmp2->next = NULL;
 	return (tmp);
 }
@@ -46,8 +48,10 @@ t_dir	*del_front_dir(t_dir *dir)
 	if (is_empty_dir(dir))
 		return (NULL);
 	tmp = dir->next;
-	free(dir);
-	dir = NULL;
+	ft_memdel((void**)&dir->parent);
+	ft_memdel((void**)&dir->pathname);
+	dir->next = NULL;
+	ft_memdel((void**)&dir);
 	return (tmp);
 }
 

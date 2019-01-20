@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 22:29:55 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 17:38:49 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 19:15:50 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,5 @@ t_file	*lst_order_file(t_file *lst_file)
 		lst_file = lst_order_by_lexico(lst_file);
 	if (PARAMS & PARAM_R)
 		lst_file = lst_order_reverse(lst_file);
-	//dispatch_print(lst_file, 0);
 	return (lst_file);
 }

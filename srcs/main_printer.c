@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 10:01:28 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 18:09:27 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 21:28:56 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,21 @@ t_field	*find_min_field_width(t_file *file)
 	return (min_field_width);
 }
 
+long long	total_block(t_file *lst_file)
+{
+	long long total;
+	t_file *tmp;
+
+	tmp = lst_file;
+	total = 0;
+	while (tmp != NULL)
+	{
+		total += tmp->block_512kb;
+		tmp = tmp->next;
+	}
+	return (total);
+}
+
 t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 {
 	t_field *min_field_width;
@@ -70,10 +85,11 @@ t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 		ft_strequ(LST_DIR->pathname, ".")))
 		printf("%s%s:\n", (LST_DIR->parent == NULL) ? "" : LST_DIR->parent,
 			LST_DIR->pathname);
+	if ((PARAMS & PARAM_L))
+		printf("total %lld\n", total_block(lst_file));
 	while (lst_file != NULL)
 	{
-		if (!(PARAMS & PARAM_A) && lst_file->pathname[0] == '.');
-		else if (ft_strchr("spdl-", lst_file->file_type))
+		if (ft_strchr("spdl-", lst_file->file_type))
 			regular_print(lst_file, min_field_width);
 		//else if (ft_strchr("bc", lst_file->file_type))
 			//special_print(lst_file, print_mult_dir, min_field_width);

@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:44:24 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 17:34:27 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 19:08:37 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,18 @@ t_file	*del_front_file(t_file *file)
 	if (is_empty_file(file))
 		return (NULL);
 	tmp = file->next;
-	free(file->owner_name);
-	free(file->group_name);
-	free(file->modif_month);
-	free(file->modif_day);
+	ft_memdel((void**)&(file->owner_name));
+	ft_memdel((void**)&(file->group_name));
+	ft_memdel((void**)&(file->modif_month));
+	ft_memdel((void**)&(file->modif_day));
 	if (file->modif_hours == NULL)
-		free(file->modif_years);
+		ft_memdel((void**)&(file->modif_years));
 	else
-		free(file->modif_hours);
-	free(file->symlink);
-	free(file->pathname);
+		ft_memdel((void**)&(file->modif_hours));
+	ft_memdel((void**)&(file->symlink));
+	ft_memdel((void**)&(file->pathname));
 	file->next = NULL;
-	free(file);
-	file = NULL;
+	ft_memdel((void**)&(file));
 	return (tmp);
 }
 

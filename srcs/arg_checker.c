@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:17:41 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 15:47:09 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 19:15:53 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static int	fill_dir_or_file(char **argv)
 			else
 			{
 
-				if ((LST_FILE = insert_back_file(LST_FILE, &try_dirfile, argv[i])) == NULL)
+				if ((LST_FILE = insert_back_file(LST_FILE, &try_dirfile, 
+					argv[i], argv[i])) == NULL)
 					return (0);
 			}
 		}

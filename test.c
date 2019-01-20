@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/07 08:26:23 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 17:21:21 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 18:29:07 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <time.h>
 #include "ft_printf.h"
 #include "ft_ls.h"
-
+/*
 int main(int argc, char **argv)
 {
 	char	buf;
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 		}
 	}
 }
-
+*/
 /*
 t_file	*move_front_file(t_file *lst_file, t_file *element)
 {
@@ -92,7 +92,7 @@ int main()
 	return 0;
 }
 */
-/*
+
 int 	main(int argc, char **argv)
 {
 	struct stat v_file;
@@ -141,7 +141,7 @@ int 	main(int argc, char **argv)
 
 
 }
-*/
+
 /*
 int		main()
 {

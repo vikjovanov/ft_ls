@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:44:18 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 17:45:19 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 21:25:05 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,16 @@ t_file	*fill_link(t_file *new, struct stat *file, char *file_name, char *path)
 	new->owner_name = ft_strdup(usr_info->pw_name);
 	new->group_name = ft_strdup(grp_info->gr_name);
 	new->size_byte = file->st_size;
+	new->block_512kb = file->st_blocks / 2;
+
 	if (!(fill_last_modif(new, file)))
-		return (NULL);
+		return (NULL);	
 	new->symlink = (new->file_type == 'l') ?
-		set_symlink(path, file_name) : NULL;
-	new->pathname = ft_strdup(file_name);
+		set_symlink(path, file_name) : NULL;		
+	new->pathname = ft_strdup(file_name);	
 	if (new->owner_name == NULL || new->group_name == NULL
 		|| new->pathname == NULL)
-		return (NULL);
+		return (NULL);	
 	new->next = NULL;
 	return (new);
 }
@@ -144,15 +146,17 @@ t_file	*insert_back_file(t_file *lst_file, struct stat *file,
 	t_file *new;
 	t_file *tmp;
 
-	if ((new = malloc(sizeof(*new))) == NULL)
+	if ((new = malloc(sizeof(t_file))) == NULL)
 		return (NULL);
-	new = fill_link(new, file, file_name, path);
+	if ((new = fill_link(new, file, file_name, path)) == NULL)
+		return (NULL);
 	if (is_empty_file(lst_file))
-		return (new);
+		return (new);	
 	tmp = lst_file;
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = new;
+	tmp = NULL;
 	return (lst_file);
 }
 
@@ -194,6 +198,7 @@ void	display_lst_file(t_file *file)
 		printf("size_byte: %ld\n", file->size_byte);
 		printf("modif_timestamps: %ld\n", file->modif_timestamps);
 		printf("modif_ctime: %s\n", ctime(&(file->modif_timestamps)));
+		printf("block 512 : %lld\n", file->block_512kb);
 		printf("my_adress: %p\n", file);
 		printf("adress next: %p\n", file->next);
 
