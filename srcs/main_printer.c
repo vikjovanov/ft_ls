@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 10:01:28 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 22:25:53 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 11:12:06 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,21 @@ t_field	*find_min_field_width(t_file *file)
 
 	if ((min_field_width = malloc(sizeof(t_field))) == NULL)
 		exit(EXIT_FAILURE);
-	min_field_width->n_link = 0;
+	min_field_width->n_link = 2;
 	min_field_width->user_name = 0;
 	min_field_width->group_name = 0;
-	min_field_width->size_byte = 0;
+	min_field_width->size_byte = 2;
 	tmp = file;
 	while (tmp != NULL)
 	{
-		if ((int)ft_nblen(file->number_of_link) > min_field_width->n_link)
-			min_field_width->n_link = (int)ft_nblen(file->number_of_link);
-		if ((int)ft_strlen(file->owner_name) > min_field_width->user_name)
-			min_field_width->user_name = (int)ft_strlen(file->owner_name);
-		if ((int)ft_strlen(file->group_name) > min_field_width->group_name)
-			min_field_width->group_name = (int)ft_strlen(file->group_name);
-		if ((int)ft_nblen(file->size_byte) > min_field_width->size_byte)
-			min_field_width->size_byte = (int)ft_nblen(file->size_byte);
+		if ((int)ft_nblen(tmp->number_of_link) > min_field_width->n_link)
+			min_field_width->n_link = (int)ft_nblen(tmp->number_of_link);
+		if ((int)ft_strlen(tmp->owner_name) > min_field_width->user_name)
+			min_field_width->user_name = (int)ft_strlen(tmp->owner_name);
+		if ((int)ft_strlen(tmp->group_name) > min_field_width->group_name)
+			min_field_width->group_name = (int)ft_strlen(tmp->group_name);
+		if ((int)ft_nblen(tmp->size_byte) > min_field_width->size_byte)
+			min_field_width->size_byte = (int)ft_nblen(tmp->size_byte);
 		tmp = tmp->next;
 	}
 	return (min_field_width);

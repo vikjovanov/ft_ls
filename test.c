@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/07 08:26:23 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/07 08:26:24 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 10:58:36 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,55 @@
 #include <time.h>
 #include "ft_printf.h"
 #include "ft_ls.h"
+/*
+t_file	*move_front_file(t_file *lst_file, t_file *element)
+{
+	t_file	*tmp;
+	t_file	*previous;
 
+	tmp = lst_file;
+	while (tmp != element)
+	{
+		if (tmp == element)
+			break ;
+		previous = tmp;
+		tmp = tmp->next;
+	}
+	previous->next = tmp->next;
+	element->next = lst_file;
+	//printf("%zu\n", length_file(element));
+	//display_lst_file(element);
+	//exit(EXIT_FAILURE);
+	return (element);
+}
+
+void	test()
+{
+	t_file	*node1;
+	t_file	*node2;
+	t_file	*node3;
+	t_file	*tmp;
+
+	node1 = malloc(sizeof(t_file));
+	node2 = malloc(sizeof(t_file));
+	node1->next = node2;
+	node2->next = NULL;
+	node1->modif_timestamps = 1547917757;
+	node2->modif_timestamps = 1547917756;
+	node3->modif_timestamps = 1547917756;
+	tmp = node1;
+	display_lst_file(tmp);
+	tmp = move_front_file(tmp, node2);
+	display_lst_file(tmp);
+
+}
+
+int main()
+{
+	test();
+	return 0;
+}
+*/
 
 int 	main(int argc, char **argv)
 {
