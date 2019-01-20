@@ -6,7 +6,7 @@
 #    By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/08 10:01:54 by vjovanov          #+#    #+#              #
-#    Updated: 2019/01/19 23:26:18 by vjovanov         ###   ########.fr        #
+#    Updated: 2019/01/20 11:47:21 by vjovanov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,10 @@ NAME= ft_ls
 LIBFT_NAME= libft
 LIBFT_LIB= libft/libft.a
 
-SRCS= ft_ls.c arg_checker.c generic_func.c order_by.c error.c main_printer.c \
-		recurse_nav.c
+SRCS= ft_ls.c arg_checker.c generic_func.c error.c main_printer.c recurse_nav.c
 SRCS+= list_func/lst_dir.c list_func/lst_dir_ext.c \
-		list_func/lst_file.c list_func/lst_file_ext.c list_func/lst_order_file.c
+		list_func/lst_file.c list_func/lst_file_ext.c
+SRCS+= order/order_by.c order/lst_order_file.c order/order_by_time.c
 SRCS_DIR=srcs/
 
 

@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 09:23:10 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 23:25:41 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 17:57:49 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,75 @@
 
 t_global	g_global = {0, NULL, NULL};
 
+t_dir	*insert_child_dir(t_dir *lst_dir, t_dir	*new_dirs)
+{
+	t_dir	*tmp;
+
+	if (new_dirs == NULL)
+		return (lst_dir);
+	tmp = new_dirs;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = lst_dir->next;
+	lst_dir->next = new_dirs;
+	return (lst_dir);
+}
+
+t_dir	*fill_lst_dir(t_file *lst_file, t_dir *lst_dir)
+{
+	t_file	*tmp;
+	t_dir	*new_dirs;
+	char	*parent;
+
+	tmp = lst_file;
+	new_dirs = new_dir();
+	while (tmp != NULL)
+	{
+		if ((parent = (LST_DIR->parent == NULL) ? ft_strdup(LST_DIR->pathname)
+			: ft_strjoin(LST_DIR->parent, LST_DIR->pathname)) == NULL)
+			return (NULL);
+		if (!(PARAMS & PARAM_A) && tmp->pathname[0] == '.')
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		if (tmp->file_type == 'd' && !(ft_strequ(tmp->pathname, ".")
+			|| ft_strequ(tmp->pathname, "..")))
+			new_dirs = insert_back_dir(new_dirs, tmp->pathname,
+				parent);
+		tmp = tmp->next;
+	}
+	lst_dir = insert_child_dir(lst_dir, new_dirs);
+	new_dirs = NULL;
+	return (lst_dir);
+}
+
 int		main(int argc, char **argv)
 {
+	int		multi_dir;
+
 	LST_DIR = new_dir();
 	LST_FILE = new_file();
 	if (!(arg_checker(argc, argv)))
 		exit(EXIT_FAILURE);
+	if (is_empty_dir(LST_DIR))
+		if ((LST_DIR = insert_front_dir(LST_DIR, ".", NULL)) == NULL)
+			return (0);
+	multi_dir = ((PARAMS & PARAM_RR) || length_dir(LST_DIR) >= 2 ||
+		(!is_empty_file(LST_FILE))) ? 1 : 0;
 	if (!(is_empty_file(LST_FILE)))
-		dispatch_print(LST_FILE, 1);
-	recurse_nav();
-	lst_order_file(LST_FILE);
-	//dispatch_print(LST_FILE, 1);
-	//ft_printf("params : %#b\n\n", g_global.params);
-	//display_lst_dir(g_global.lst_dir);
-	//display_lst_file(g_global.lst_file);
-	
+		dispatch_print(LST_FILE, 0);
+	while (!is_empty_dir(LST_DIR))
+	{
+		recurse_nav();
+		//display_lst_dir(LST_DIR);
+		LST_FILE = lst_order_file(LST_FILE);
+		//display_lst_file(LST_FILE);	
+
+		if (PARAMS & PARAM_RR)
+			LST_DIR = fill_lst_dir(LST_FILE, LST_DIR);
+		LST_FILE = dispatch_print(LST_FILE, multi_dir);
+		LST_DIR = del_front_dir(LST_DIR);
+	}
 	return (0);
 }

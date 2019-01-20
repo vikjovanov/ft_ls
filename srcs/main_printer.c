@@ -6,16 +6,14 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 10:01:28 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 11:12:06 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 18:09:27 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	regular_print(t_file *lst_file, int	print_mult_dir, t_field *min_field)
+void	regular_print(t_file *lst_file, t_field *min_field)
 {
-	if (print_mult_dir == 3)
-		printf("slu\n");
 	if (g_global.params & PARAM_L)
 	{
 	printf("%*d ", min_field->n_link, lst_file->number_of_link);
@@ -29,7 +27,11 @@ void	regular_print(t_file *lst_file, int	print_mult_dir, t_field *min_field)
 	else
 		printf("%s ", lst_file->modif_years);
 	}
-	printf("%s\n", lst_file->pathname);
+	if (lst_file->file_type != 'l')
+		printf("%s\n", lst_file->pathname);
+	else
+		printf("%s -> %s\n", lst_file->pathname, lst_file->symlink);
+
 }
 
 t_field	*find_min_field_width(t_file *file)
@@ -59,21 +61,25 @@ t_field	*find_min_field_width(t_file *file)
 	return (min_field_width);
 }
 
-void	dispatch_print(t_file *lst_file, int print_mult_dir)
+t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 {
 	t_field *min_field_width;
-	t_file 	*tmp;
 
 	min_field_width = find_min_field_width(lst_file);
-	tmp = NULL;
+	if (print_mult_dir == 1 && !(ft_strequ(LST_DIR->pathname, "./") ||
+		ft_strequ(LST_DIR->pathname, ".")))
+		printf("%s%s:\n", (LST_DIR->parent == NULL) ? "" : LST_DIR->parent,
+			LST_DIR->pathname);
 	while (lst_file != NULL)
 	{
-		if (ft_strchr("spdl-", lst_file->file_type))
-			regular_print(lst_file, print_mult_dir, min_field_width);
+		if (!(PARAMS & PARAM_A) && lst_file->pathname[0] == '.');
+		else if (ft_strchr("spdl-", lst_file->file_type))
+			regular_print(lst_file, min_field_width);
 		//else if (ft_strchr("bc", lst_file->file_type))
 			//special_print(lst_file, print_mult_dir, min_field_width);
-		tmp = lst_file;
-		lst_file = lst_file->next;
-		del_front_file(tmp);
+		lst_file = del_front_file(lst_file);
 	}
+	if (length_dir(LST_DIR) > 1 && print_mult_dir == 1)
+		printf("\n");
+	return (lst_file);
 }

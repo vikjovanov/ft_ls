@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/07 08:26:23 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 10:58:36 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 17:21:21 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,27 @@
 #include <time.h>
 #include "ft_printf.h"
 #include "ft_ls.h"
+
+int main(int argc, char **argv)
+{
+	char	buf;
+	char	*buff;
+	int		buf_size;
+
+	printf("%zu\n", readlink(argv[1], buff, sizeof(buff)));
+	exit(1);
+	if (argc != 1)
+	{
+		if ((buf_size = (int)readlink(argv[1], buf, sizeof(buf))) < 0)
+			perror("readlink() : ");
+		else
+		{
+			buf[buf_size] = '\0';
+			printf("%s\n", buf);
+		}
+	}
+}
+
 /*
 t_file	*move_front_file(t_file *lst_file, t_file *element)
 {
@@ -71,7 +92,7 @@ int main()
 	return 0;
 }
 */
-
+/*
 int 	main(int argc, char **argv)
 {
 	struct stat v_file;
@@ -120,7 +141,7 @@ int 	main(int argc, char **argv)
 
 
 }
-
+*/
 /*
 int		main()
 {

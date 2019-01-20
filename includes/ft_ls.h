@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 08:39:00 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 23:25:21 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 17:27:28 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 #define PARAM_T 16
 #define ACCEPTED_PARAMS "lraRt"
 
+#define MAX_LENGTH_FILENAME 4096
+
 typedef struct 		s_file 
 {
 	char			file_type;
@@ -49,6 +51,7 @@ typedef struct 		s_file
 	char			*modif_day;
 	char			*modif_hours;
 	char			*modif_years;
+	char			*symlink;
 	char			*pathname;
 	struct s_file	*next;
 }					t_file;
@@ -136,32 +139,31 @@ void	display_lst_dir(t_dir *dir);
 */
 
 t_file	*new_file(void);
-t_file	*insert_back_file(t_file *lst_file, struct stat *file, char *file_name);
+t_file	*insert_back_file(t_file *lst_file, struct stat *file,
+	char *file_name, char *path);
 void	display_lst_file(t_file *file);
 int		is_empty_file(t_file *file);
 t_file	*del_back_file(t_file *file);
 t_file	*del_front_file(t_file *file);
 t_file	*clear_file(t_file *file);
 size_t	length_file(t_file *file);
+t_file	*move_front_file(t_file *lst_file, t_file *element);
+
 
 /*
 ** order
 */
 
 char		**order_by_lexic(char **str);
-
-int		lst_order_file(t_file *lst_file);
+t_file		*lst_order_file(t_file *lst_file);
+t_file		*lst_order_by_time(t_file *lst_file);
 
 
 /*
 ** print
 */
 
-void	dispatch_print(t_file *lst_file, int print_mult_dir);
-
-
-
-
+t_file	*dispatch_print(t_file *lst_file, int print_mult_dir);
 
 
 

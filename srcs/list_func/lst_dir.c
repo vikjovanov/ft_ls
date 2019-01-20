@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_dir.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 08:42:38 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/11 08:42:39 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 14:43:44 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,39 @@ t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
 
 }
 */
-t_dir	*insert_back_dir(t_dir *dir, char *path, char *parent)
+static char	*fill_back_dir_path(char *path)
+{
+	char *new_path;
+
+	if (ft_strequ(path, "."))
+		new_path = ft_strdup("./");
+	else if (ft_strequ(path, ".."))
+		new_path = ft_strdup("../");
+	else
+		new_path = (ft_strchr(path, '/') == NULL) ? 
+			ft_strjoin(path, "/") : ft_strdup(path);
+	return (new_path);
+}
+
+t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
 {
 	t_dir *new;
 	t_dir *tmp;
 
-	if (path == NULL)
+	if (path == NULL || (new = malloc(sizeof(*new))) == NULL)
 		return (NULL);
-	if ((new = malloc(sizeof(*new))) == NULL)
+	if (parent == NULL)
+		new->parent = ft_strdup("");
+	else if (parent != NULL && ft_strequ(parent, "."))
+		new->parent = ft_strdup("./");
+	else if (parent != NULL && ft_strequ(parent, ".."))
+		new->parent = ft_strdup("../");
+	else
+		new->parent = (ft_strchr(parent, '/') == NULL) ?
+			ft_strjoin(parent, "/") : ft_strdup(parent);
+	new->pathname = fill_back_dir_path(path);
+	if (new->parent == NULL || new->pathname == NULL)
 		return (NULL);
-	new->parent = parent;
-	new->pathname = path;
 	new->next = NULL;
 	if (is_empty_dir(dir))
 		return (new);

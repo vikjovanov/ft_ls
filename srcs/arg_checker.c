@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:17:41 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 19:42:38 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 15:47:09 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int			arg_checker(int argc, char **argv)
 	params_step = 0;
 	if (argc < 2)
 	{
-		if ((LST_DIR = insert_front_dir(LST_DIR, "./", NULL)) == NULL)
+		if ((LST_DIR = insert_front_dir(LST_DIR, ".", NULL)) == NULL)
 			return (-1);
 	}
 	else

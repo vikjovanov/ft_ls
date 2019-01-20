@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:44:18 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 23:06:40 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 17:45:19 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,34 +100,53 @@ static char	set_file_type(struct stat *file)
 	return (mode);
 }
 
-t_file *fill_link(t_file *new, struct stat *file, char *file_name)
+char	*set_symlink(char *path, char *name_file)
+{
+	char	*symlink;
+	ssize_t	size_sym;
+
+	symlink = ft_strnew(MAX_LENGTH_FILENAME);
+	if ((size_sym = readlink(path, symlink, sizeof(symlink))) < 0)
+		generic_error(name_file);
+	return (symlink);
+}
+
+t_file	*fill_link(t_file *new, struct stat *file, char *file_name, char *path)
 {
 	struct passwd *usr_info;
 	struct group *grp_info;
 
 	usr_info = getpwuid(file->st_uid);	
-	grp_info = getgrgid(file->st_gid);	
+	grp_info = getgrgid(file->st_gid);
 	new->file_type = set_file_type(file);	
 	new->permission = file->st_mode;
 	new->number_of_link = file->st_nlink;
-	new->owner_name = usr_info->pw_name;
-	new->group_name = grp_info->gr_name;
+	/////// NE PAS OUBLIER SI GROUP A NULL ALORS
+	/////// ON AFFICHE L'ID MAIS FAUT IL POUR OWNER ???????
+	new->owner_name = ft_strdup(usr_info->pw_name);
+	new->group_name = ft_strdup(grp_info->gr_name);
 	new->size_byte = file->st_size;
 	if (!(fill_last_modif(new, file)))
 		return (NULL);
-	new->pathname = file_name;
+	new->symlink = (new->file_type == 'l') ?
+		set_symlink(path, file_name) : NULL;
+	new->pathname = ft_strdup(file_name);
+	if (new->owner_name == NULL || new->group_name == NULL
+		|| new->pathname == NULL)
+		return (NULL);
 	new->next = NULL;
 	return (new);
 }
 
-t_file	*insert_back_file(t_file *lst_file, struct stat *file, char *file_name)
+t_file	*insert_back_file(t_file *lst_file, struct stat *file,
+	char *file_name, char *path)
 {
 	t_file *new;
 	t_file *tmp;
 
 	if ((new = malloc(sizeof(*new))) == NULL)
 		return (NULL);
-	new = fill_link(new, file, file_name);
+	new = fill_link(new, file, file_name, path);
 	if (is_empty_file(lst_file))
 		return (new);
 	tmp = lst_file;
@@ -135,6 +154,24 @@ t_file	*insert_back_file(t_file *lst_file, struct stat *file, char *file_name)
 		tmp = tmp->next;
 	tmp->next = new;
 	return (lst_file);
+}
+
+t_file	*move_front_file(t_file *lst_file, t_file *element)
+{
+	t_file	*tmp;
+	t_file	*previous;
+
+	tmp = lst_file;
+	if (lst_file == element)
+		return (lst_file);
+	while (tmp != element)
+	{
+		previous = tmp;
+		tmp = tmp->next;
+	}
+	previous->next = element->next;
+	element->next = lst_file;
+	return (element);
 }
 
 
@@ -157,6 +194,9 @@ void	display_lst_file(t_file *file)
 		printf("size_byte: %ld\n", file->size_byte);
 		printf("modif_timestamps: %ld\n", file->modif_timestamps);
 		printf("modif_ctime: %s\n", ctime(&(file->modif_timestamps)));
+		printf("my_adress: %p\n", file);
+		printf("adress next: %p\n", file->next);
+
 		//printf("last_modif: %s", ctime(&(file->last_modif)));
 		printf("----------\n");
 		file = file->next;

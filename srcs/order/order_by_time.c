@@ -1,55 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_order_file.c                                   :+:      :+:    :+:   */
+/*   order_by_time.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/19 22:29:55 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/20 11:19:08 by vjovanov         ###   ########.fr       */
+/*   Created: 2019/01/20 11:46:22 by vjovanov          #+#    #+#             */
+/*   Updated: 2019/01/20 17:40:39 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-/*
-t_file	*lst_order_reverse(t_file *lst_file)
-{
 
-}
-
-t_file	*lst_order_by_lexico(t_file *lst_file)
-{
-
-}
-*/
-t_file	*move_front_file(t_file *lst_file, t_file *element)
-{
-	t_file	*tmp;
-	t_file	*previous;
-
-	tmp = lst_file;
-	//printf("DEBUT\n");
-	//display_lst_file(lst_file);
-	//printf("}}}}}}}}}}}}}}}}}}}}}\n");
-	while (tmp != element)
-	{
-		//if (tmp == element)
-		//	break ;
-		previous = tmp;
-		tmp = tmp->next;
-	}
-	//printf("elemet.next %p\n", element->next);
-	previous->next = element->next;
-	element->next = lst_file;
-	//printf("%zu\n", length_file(element));
-	//printf("APRES DEPLACEMENT\n");
-	//display_lst_file(element);
-	//printf("PPPPPPPPPPP\n");
-	//exit(EXIT_FAILURE);
-	return (element);
-}
-
-t_file	*find_last_block(t_file *lst_search)
+static t_file	*find_last_block(t_file *lst_search)
 {
 	t_file	*last_block;
 
@@ -63,7 +26,7 @@ t_file	*find_last_block(t_file *lst_search)
 	return (last_block);
 }
 
-t_file	*lst_order_by_lexicotime(t_file *lst_file)
+static t_file	*lst_order_by_lexicotime(t_file *lst_file)
 {
 	t_file	*last_block;
 	t_file	*tmp;
@@ -92,7 +55,7 @@ t_file	*lst_order_by_lexicotime(t_file *lst_file)
 	return (lst_file);
 }
 
-t_file	*find_biggest_time(t_file *lst_search, int *swapped)
+static t_file	*find_biggest_time(t_file *lst_search, int *swapped)
 {
 	t_file	*node_to_deplace;
 
@@ -134,20 +97,6 @@ t_file	*lst_order_by_time(t_file *lst_file)
 			skip++;
 		}
 	}
-	printf("GO TO LEXICOTIME\n");
 	lst_file = lst_order_by_lexicotime(lst_file);
 	return (lst_file);
-}
-
-int		lst_order_file(t_file *lst_file)
-{
-	if (PARAMS & PARAM_T)
-		lst_file = lst_order_by_time(lst_file);
-	//else
-		//tri par lexico
-	//if (PARAMS & PARAMS_R)
-		//tri par reverse
-	//display_lst_file(lst_file);
-	dispatch_print(lst_file, 0);
-	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: vjovanov <vjovanov@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 19:14:23 by vjovanov          #+#    #+#             */
-/*   Updated: 2019/01/19 22:27:48 by vjovanov         ###   ########.fr       */
+/*   Updated: 2019/01/20 17:58:09 by vjovanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@ int		fill_lst_file(DIR *current_dir, char *path)
 
 	if ((dir_element = readdir(current_dir)) != NULL)
 	{
-		if (!(PARAMS & PARAM_A) && dir_element->d_name[0] == '.')
-			return (1);
+		//if (!(PARAMS & PARAM_A) && dir_element->d_name[0] == '.')
+		//	return (1);
 		if ((pathname = ft_strjoin(path, dir_element->d_name)) == NULL)
 			return (0);
 		if (stat(pathname, &infos_element) == -1)
-			generic_error(dir_element->d_name);
-		if ((LST_FILE = insert_back_file(LST_FILE, &infos_element, dir_element->d_name)) == NULL)
+			if (lstat(pathname, &infos_element) == -1)
+				generic_error(dir_element->d_name);
+		if ((LST_FILE = insert_back_file(LST_FILE, &infos_element,
+				dir_element->d_name, pathname)) == NULL)
 			return (0);
 	}
 	else
@@ -41,11 +43,16 @@ int		recurse_nav(void)
 	int		result;
 
 	result = 0;
-	if (LST_DIR->parent == NULL)
-		path = LST_DIR->pathname;
+	if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, "."))
+		path = "./";
+	else if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, ".."))
+		path = "../";
+	else if (LST_DIR->parent == NULL)
+		path = ft_strdup(LST_DIR->pathname);
 	else
-		if ((path = ft_strjoin(LST_DIR->parent, LST_DIR->pathname)) == NULL)
-			return (0);
+		path = ft_strjoin(LST_DIR->parent, LST_DIR->pathname);
+	if (path == NULL)
+		return (0);
 	if ((current_dir = opendir(path)))
 		while (current_dir)
 		{
@@ -55,8 +62,9 @@ int		recurse_nav(void)
 				return (0);
 		}
 	else
+	{
+		printf("cette erreur\n");
 		generic_error(LST_DIR->pathname);
-	//display_lst_file(LST_FILE);
-	//LST_FILE = order_file(LST_FILE);
+	}
 	return (1);
 }
