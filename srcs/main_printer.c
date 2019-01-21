@@ -60,7 +60,12 @@ t_field	*find_min_field_width(t_file *file)
 	}
 	return (min_field_width);
 }
+/*
+void		permission_print(t_file *lst_file)
+{
 
+}
+*/
 long long	total_block(t_file *lst_file)
 {
 	long long total;
@@ -89,6 +94,7 @@ t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 		printf("total %lld\n", total_block(lst_file));
 	while (lst_file != NULL)
 	{
+		//permission_print(lst_file);
 		if (ft_strchr("spdl-", lst_file->file_type))
 			regular_print(lst_file, min_field_width);
 		//else if (ft_strchr("bc", lst_file->file_type))

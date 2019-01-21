@@ -126,8 +126,7 @@ t_file	*fill_link(t_file *new, struct stat *file, char *file_name, char *path)
 	new->owner_name = ft_strdup(usr_info->pw_name);
 	new->group_name = ft_strdup(grp_info->gr_name);
 	new->size_byte = file->st_size;
-	new->block_512kb = file->st_blocks / 2;
-
+	new->block_512kb = file->st_blocks;
 	if (!(fill_last_modif(new, file)))
 		return (NULL);	
 	new->symlink = (new->file_type == 'l') ?

@@ -64,18 +64,22 @@ int		main(int argc, char **argv)
 	LST_FILE = new_file();
 	if (!(arg_checker(argc, argv)))
 		exit(EXIT_FAILURE);
-	if (is_empty_dir(LST_DIR))
+	display_lst_file(LST_FILE);
+	if (is_empty_dir(LST_DIR) && is_empty_file(LST_FILE))
 		if ((LST_DIR = insert_front_dir(LST_DIR, ".", NULL)) == NULL)
 			return (0);
 	multi_dir = ((PARAMS & PARAM_RR) || length_dir(LST_DIR) >= 2 ||
 		(!is_empty_file(LST_FILE))) ? 1 : 0;
 	if (!(is_empty_file(LST_FILE)))
 		dispatch_print(LST_FILE, 0);
+	//display_lst_dir(LST_DIR);
 	while (!is_empty_dir(LST_DIR))
 	{
 		LST_FILE = new_file();
 		if (!(recurse_nav()))
 			exit(EXIT_FAILURE);
+		//display_lst_file(LST_FILE);
+		//display_lst_dir(LST_DIR);
 		LST_FILE = lst_order_file(LST_FILE);
 		if (PARAMS & PARAM_RR)
 			LST_DIR = fill_lst_dir(LST_FILE, LST_DIR);		

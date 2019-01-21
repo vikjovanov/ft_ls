@@ -40,16 +40,18 @@ int		recurse_nav(void)
 	DIR *current_dir;
 	char	*path;
 	int		result;
+	char	*tmp;
 
 	result = 0;
-	if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, "."))
-		path = "./";
-	else if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, ".."))
-		path = "../";
-	else if (LST_DIR->parent == NULL)
-		path = ft_strdup(LST_DIR->pathname);
-	else
-		path = ft_strjoin(LST_DIR->parent, LST_DIR->pathname);
+	//if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, "."))
+	//	path = "./";
+	//else if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, ".."))
+	//	path = "../";
+	//else if (LST_DIR->parent == NULL)
+	//	path = ft_strdup(LST_DIR->pathname);
+	tmp = ft_strjoin(LST_DIR->parent, LST_DIR->pathname);
+	path = ft_strjoin(tmp, "/");
+	free(tmp);
 	if (path == NULL)
 		return (0);
 	if ((current_dir = opendir(path)))

@@ -17,20 +17,6 @@ t_dir	*new_dir(void)
 	return (NULL);
 }
 
-static char	*fill_back_dir_path(char *path)
-{
-	char *new_path;
-
-	if (ft_strequ(path, "."))
-		new_path = ft_strdup("./");
-	else if (ft_strequ(path, ".."))
-		new_path = ft_strdup("../");
-	else
-		new_path = (ft_strchr(path, '/') == NULL) ? 
-			ft_strjoin(path, "/") : ft_strdup(path);
-	return (new_path);
-}
-
 t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
 {
 	t_dir *new;
@@ -38,15 +24,15 @@ t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
 	if (path == NULL || (new = malloc(sizeof(*new))) == NULL)
 		return (NULL);
 	if (parent == NULL)
+	{
 		new->parent = ft_strdup("");
-	else if (parent != NULL && ft_strequ(parent, "."))
-		new->parent = ft_strdup("./");
-	else if (parent != NULL && ft_strequ(parent, ".."))
-		new->parent = ft_strdup("../");
+		new->pathname = ft_strdup(path);
+	}
 	else
-		new->parent = (ft_strchr(parent, '/') == NULL) ?
-			ft_strjoin(parent, "/") : ft_strdup(parent);
-	new->pathname = fill_back_dir_path(path);
+	{
+		new->parent = ft_strdup(path);
+		new->pathname = ft_strjoin("/", path);
+	}
 	if (new->parent == NULL || new->pathname == NULL)
 		return (NULL);
 	if (is_empty_dir(dir))
@@ -87,15 +73,15 @@ t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
 	if (path == NULL || (new = malloc(sizeof(*new))) == NULL)
 		return (NULL);
 	if (parent == NULL)
+	{
 		new->parent = ft_strdup("");
-	else if (parent != NULL && ft_strequ(parent, "."))
-		new->parent = ft_strdup("./");
-	else if (parent != NULL && ft_strequ(parent, ".."))
-		new->parent = ft_strdup("../");
+		new->pathname = ft_strdup(path);
+	}
 	else
-		new->parent = (ft_strchr(parent, '/') == NULL) ?
-			ft_strjoin(parent, "/") : ft_strdup(parent);
-	new->pathname = fill_back_dir_path(path);
+	{
+		new->parent = ft_strdup(parent);
+		new->pathname = ft_strjoin("/", path);
+	}
 	if (new->parent == NULL || new->pathname == NULL)
 		return (NULL);
 	new->next = NULL;
