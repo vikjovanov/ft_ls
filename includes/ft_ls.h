@@ -38,6 +38,9 @@
 
 #define MAX_LENGTH_FILENAME 4096
 
+#define MINORBITS        24
+#define MINORMASK        16777215
+
 typedef struct 		s_file 
 {
 	char			file_type;
@@ -46,6 +49,8 @@ typedef struct 		s_file
 	char			*owner_name;
 	char			*group_name;
 	long			size_byte;
+	unsigned int	major;
+	unsigned int	minor;
 	time_t			modif_timestamps;
 	char			*modif_month;
 	char			*modif_day;

@@ -58,6 +58,18 @@ t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
 }
 */
 
+static void	set_major_minor(t_file *new, struct stat *file)
+{
+	if (new->file_type != 'c' && new->file_type != 'b')
+	{
+		new->major = 0;
+		new->minor = 0;
+		return ;
+	}
+	new->major = ((file->st_rdev) >> MINORBITS);
+	new->minor = ((file->st_rdev) & MINORMASK);
+}
+
 /*
 ** (((3600*24)*30)*6)=6mois=15552000
 */
@@ -121,19 +133,19 @@ t_file	*fill_link(t_file *new, struct stat *file, char *file_name, char *path)
 	new->file_type = set_file_type(file);	
 	new->permission = file->st_mode;
 	new->number_of_link = file->st_nlink;
-	/////// NE PAS OUBLIER SI GROUP A NULL ALORS
-	/////// ON AFFICHE L'ID MAIS FAUT IL POUR OWNER ???????
-	new->owner_name = ft_strdup(usr_info->pw_name);
-	new->group_name = ft_strdup(grp_info->gr_name);
+	new->owner_name = (usr_info != NULL) ? ft_strdup(usr_info->pw_name)
+		: ft_itoa((int)(file->st_uid));
+	new->group_name = (grp_info != NULL) ? ft_strdup(grp_info->gr_name)
+		: ft_itoa((int)(file->st_gid));
 	new->size_byte = file->st_size;
+	set_major_minor(new, file);
 	new->block_512kb = file->st_blocks;
 	if (!(fill_last_modif(new, file)))
 		return (NULL);	
 	new->symlink = (new->file_type == 'l') ?
 		set_symlink(path, file_name) : NULL;		
 	new->pathname = ft_strdup(file_name);	
-	if (new->owner_name == NULL || new->group_name == NULL
-		|| new->pathname == NULL)
+	if (!(new->owner_name) || !(new->group_name) || !(new->pathname))
 		return (NULL);	
 	new->next = NULL;
 	return (new);

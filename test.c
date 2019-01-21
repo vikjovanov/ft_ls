@@ -112,6 +112,7 @@ int 	main(int argc, char **argv)
 
 	pass_file = getpwuid(v_file.st_uid);
 	group_file = getgrgid(v_file.st_gid);
+	ft_printf("1UU : %#b\n", MINORMASK);
 	printf("id device : %d\n", v_file.st_dev);
 	printf("inode numb: %llu\n", v_file.st_ino);
 	printf("mode type : %d\n", v_file.st_mode); //convertir en binaire pour recuperer valeurs
@@ -132,6 +133,10 @@ int 	main(int argc, char **argv)
 	while (group_file->gr_mem[++i] != NULL)
 		printf("\t\tmember name: %s\n", group_file->gr_mem[i]);
 	printf("id spe fil: %d\n", v_file.st_rdev);
+	//minor codé 20
+	printf("minor: %d\n", MINOR(v_file.st_rdev));
+	//major codé 12
+	printf("major: %d\n", MAJOR(v_file.st_rdev));
 	printf("total size: %lld\n", v_file.st_size);
 	printf("block size: %d\n", v_file.st_blksize);
 	printf("nb 512 all: %lld\n", v_file.st_blocks);
