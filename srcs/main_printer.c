@@ -64,7 +64,7 @@ t_field	*find_min_field_width(t_file *file)
 void		permission_print(t_file *lst_file)
 {
 	printf("%c", lst_file->file_type);
-	printf("%c", (S_IRWXU &));
+	printf("%c", (S_IRWXU & S_IRUSR) ? );
 }
 
 long long	total_block(t_file *lst_file)
