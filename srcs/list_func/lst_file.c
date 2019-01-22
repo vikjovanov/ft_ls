@@ -132,6 +132,9 @@ t_file	*fill_link(t_file *new, struct stat *file, char *file_name, char *path)
 	grp_info = getgrgid(file->st_gid);
 	new->file_type = set_file_type(file);	
 	new->permission = file->st_mode;
+	//ft_printf("fill link\n");
+	//ft_printf("%s | %ld | ", file_name, new->permission);
+	//ft_printf("%b\n\n", new->permission);
 	new->number_of_link = file->st_nlink;
 	new->owner_name = (usr_info != NULL) ? ft_strdup(usr_info->pw_name)
 		: ft_itoa((int)(file->st_uid));
@@ -202,7 +205,7 @@ void	display_lst_file(t_file *file)
 		printf("\n-- file --\n");
 		printf("name: %s\n", file->pathname);
 		printf("type: %c\n", file->file_type);
-		printf("permission: %ld\n", file->permission);
+		printf("permission: %d\n", file->permission);
 		printf("number link: %d\n", file->number_of_link);
 		printf("owner: %s\n", file->owner_name);
 		printf("group: %s\n", file->group_name);
@@ -210,6 +213,11 @@ void	display_lst_file(t_file *file)
 		printf("modif_timestamps: %ld\n", file->modif_timestamps);
 		printf("modif_ctime: %s\n", ctime(&(file->modif_timestamps)));
 		printf("block 512 : %lld\n", file->block_512kb);
+		if (file->file_type == 'b' || file->file_type == 'c')
+		{
+			printf("major : %u\n", file->major);
+			printf("minor : %u\n", file->minor);
+		}
 		printf("my_adress: %p\n", file);
 		printf("adress next: %p\n", file->next);
 

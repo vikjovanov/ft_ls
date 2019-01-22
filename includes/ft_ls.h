@@ -44,7 +44,7 @@
 typedef struct 		s_file 
 {
 	char			file_type;
-	long			permission;
+	int				permission;
 	int				number_of_link;
 	char			*owner_name;
 	char			*group_name;
@@ -75,6 +75,7 @@ typedef struct 		s_field
 	int				user_name;
 	int				group_name;
 	int				size_byte;
+	int				major;
 }					t_field;
 
 /*
@@ -144,7 +145,7 @@ void	display_lst_dir(t_dir *dir);
 ** lst_file
 */
 
-t_file	*new_file(void);
+t_file		*new_file(void);
 t_file	*insert_back_file(t_file *lst_file, struct stat *file,
 	char *file_name, char *path);
 void	display_lst_file(t_file *file);
@@ -169,8 +170,9 @@ t_file		*lst_order_by_time(t_file *lst_file);
 ** print
 */
 
-t_file	*dispatch_print(t_file *lst_file, int print_mult_dir);
-
+t_file		*dispatch_print(t_file *lst_file, int print_mult_dir);
+t_field		*find_min_field_width(t_file *file);
+long long	total_block(t_file *lst_file);
 
 
 int		recurse_nav(void);
