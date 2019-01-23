@@ -10,6 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_ls.h"
+
+char	*quadruple_join(char *str1, char *str2, char *str3, char *str4)
+{
+	char *tmp;
+	char *new;
+
+	tmp = NULL;
+	new = NULL;
+	if (str1 == NULL || str2 == NULL || str3 == NULL || str4 == NULL)
+		return (NULL);
+	new = ft_strjoin(str1, str2);
+	tmp = ft_strjoin(new, str3);
+	ft_memdel((void**)&new);
+	new = ft_strjoin(tmp, str4);
+	ft_memdel((void**)&tmp);
+	return (new);
+}
+
 long	ft_exp_l(long n, int exp)
 {
 	long	value_exp;

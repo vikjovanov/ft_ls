@@ -93,6 +93,47 @@ int main()
 }
 */
 
+#include <fcntl.h>
+ 
+/* Not technically required, but needed on some UNIX distributions */
+#include <sys/types.h>
+#include <sys/stat.h>
+
+int main(int argc, char **argv)
+{
+	int fd1;
+	int fd2;
+	char *line1, *line2;
+	long line;
+
+	if (argc != 3)
+		return 0;
+	fd1 = open(argv[1], O_RDONLY);
+	fd2 = open(argv[2], O_RDONLY);
+	line = 0;
+	while (get_next_line(fd1, &line1) == 1)
+	{
+		if (get_next_line(fd2, &line2) == 1)
+		{
+			if (!ft_strequ(line1, line2))
+			{
+				printf("%ld |ls   | %s\n", line, line1);
+				printf("%ld |ft_ls| %s\n", line, line2);
+				printf("\n");
+			}
+			free(line1);
+			free(line2);
+		}
+		line++;
+	}
+}
+
+
+
+/*
+
+#define S_IFSHAD 45056
+
 int 	main(int argc, char **argv)
 {
 	struct stat v_file;
@@ -109,6 +150,14 @@ int 	main(int argc, char **argv)
 		return (0);
 	}
 	i = -1;
+
+
+	char *list;
+	size_t size = 0;;
+	size = listxattr(argv[1], NULL, size, 0);
+	list = (char*)malloc(sizeof(char) * size);
+	size = listxattr(argv[1], list, size, 0);
+	printf("LST = %s\n", list);
 
 	pass_file = getpwuid(v_file.st_uid);
 	group_file = getgrgid(v_file.st_gid);
@@ -134,9 +183,9 @@ int 	main(int argc, char **argv)
 		printf("\t\tmember name: %s\n", group_file->gr_mem[i]);
 	printf("id spe fil: %d\n", v_file.st_rdev);
 	//minor codé 20
-	printf("minor: %d\n", MINOR(v_file.st_rdev));
+	//printf("minor: %d\n", MINOR(v_file.st_rdev));
 	//major codé 12
-	printf("major: %d\n", MAJOR(v_file.st_rdev));
+	//printf("major: %d\n", MAJOR(v_file.st_rdev));
 	printf("total size: %lld\n", v_file.st_size);
 	printf("block size: %d\n", v_file.st_blksize);
 	printf("nb 512 all: %lld\n", v_file.st_blocks);
@@ -146,6 +195,7 @@ int 	main(int argc, char **argv)
 
 
 }
+*/
 
 /*
 int		main()

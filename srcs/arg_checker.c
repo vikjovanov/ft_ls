@@ -67,24 +67,24 @@ int			arg_checker(int argc, char **argv)
 	int		params_step;
 
 	params_step = 0;
-	if (argc < 2)
+	argc = 2;
+	while (*(++argv) != NULL)
+		if (((*argv)[0]) == '-' && ft_strlen(*argv) > 1 && params_step == 0)
+		{
+			if (fill_params(*argv) == 0)
+				params_step = 1;
+		}
+		else
+			break ;
+	if (*argv != NULL)
 	{
-		if ((LST_DIR = insert_front_dir(LST_DIR, ".", NULL)) == NULL)
-			return (-1);
+		if (fill_dir_or_file(&(*argv)) == 0)
+			return (0);
 	}
 	else
 	{
-		while (*(++argv) != NULL)
-			if (((*argv)[0]) == '-' && ft_strlen(*argv) > 1 && params_step == 0)
-			{
-				if (fill_params(*argv) == 0)
-					params_step = 1;
-			}
-			else
-				break ;
-		if (*argv != NULL)
-			if (fill_dir_or_file(&(*argv)) == 0)
-				return (0);
+		if ((LST_DIR = insert_front_dir(LST_DIR, ".", NULL)) == NULL)
+			return (0);
 	}
 	return (1);
 }

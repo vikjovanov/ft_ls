@@ -55,6 +55,7 @@ int		recurse_nav(void)
 	if (path == NULL)
 		return (0);
 	if ((current_dir = opendir(path)))
+	{
 		while (current_dir)
 		{
 			if ((result = fill_lst_file(current_dir, path)) == -1)
@@ -62,6 +63,8 @@ int		recurse_nav(void)
 			else if (result == 0)
 				return (0);
 		}
+		closedir(current_dir);
+	}
 	else
 		generic_error(LST_DIR->pathname);
 	return (1);

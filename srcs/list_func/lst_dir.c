@@ -104,16 +104,16 @@ void	display_lst_dir(t_dir *dir)
 	tmp = dir;
 	if (is_empty_dir(dir))
 	{
-		printf("--\n");
-		printf("(null)\n");
-		printf("--\n");
+		ft_printf("--\n");
+		ft_printf("(null)\n");
+		ft_printf("--\n");
 	}
 	while (dir != NULL)
 	{
-		printf("--\n");
-		printf("path: %s\n", dir->pathname);
-		printf("parent: %s\n", dir->parent);
-		printf("--\n");
+		ft_printf("--\n");
+		ft_printf("path: %s\n", dir->pathname);
+		ft_printf("parent: %s\n", dir->parent);
+		ft_printf("--\n");
 		dir = dir->next;
 	}
 	dir = tmp;

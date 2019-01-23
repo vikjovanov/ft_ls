@@ -45,6 +45,7 @@ typedef struct 		s_file
 {
 	char			file_type;
 	int				permission;
+	int				has_xattr;
 	int				number_of_link;
 	char			*owner_name;
 	char			*group_name;
@@ -76,6 +77,7 @@ typedef struct 		s_field
 	int				group_name;
 	int				size_byte;
 	int				major;
+	int				modif_hy;
 }					t_field;
 
 /*
@@ -119,6 +121,7 @@ int		arg_checker(int argc, char **argv);
 */
 
 long	ft_exp_l(long n, int exp);
+char	*quadruple_join(char *str1, char *str2, char *str3, char *str4);
 
 /*
 ** lst_dir

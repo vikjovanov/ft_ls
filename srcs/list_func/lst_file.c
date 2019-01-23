@@ -123,6 +123,20 @@ char	*set_symlink(char *path, char *name_file)
 	return (symlink);
 }
 
+int		fill_xattr(char *path)
+{
+	int 	size;
+
+	size = 0;
+	size = (int)listxattr(path, NULL, size, 0);
+	if (size < 0)
+		return (-1);
+	else if (size == 0)
+		return (0);
+	else
+		return (1);
+}
+
 t_file	*fill_link(t_file *new, struct stat *file, char *file_name, char *path)
 {
 	struct passwd *usr_info;
@@ -132,9 +146,7 @@ t_file	*fill_link(t_file *new, struct stat *file, char *file_name, char *path)
 	grp_info = getgrgid(file->st_gid);
 	new->file_type = set_file_type(file);	
 	new->permission = file->st_mode;
-	//ft_printf("fill link\n");
-	//ft_printf("%s | %ld | ", file_name, new->permission);
-	//ft_printf("%b\n\n", new->permission);
+	new->has_xattr = fill_xattr(path);
 	new->number_of_link = file->st_nlink;
 	new->owner_name = (usr_info != NULL) ? ft_strdup(usr_info->pw_name)
 		: ft_itoa((int)(file->st_uid));
@@ -202,27 +214,27 @@ void	display_lst_file(t_file *file)
 	tmp = file;
 	while (file != NULL)
 	{
-		printf("\n-- file --\n");
-		printf("name: %s\n", file->pathname);
-		printf("type: %c\n", file->file_type);
-		printf("permission: %d\n", file->permission);
-		printf("number link: %d\n", file->number_of_link);
-		printf("owner: %s\n", file->owner_name);
-		printf("group: %s\n", file->group_name);
-		printf("size_byte: %ld\n", file->size_byte);
-		printf("modif_timestamps: %ld\n", file->modif_timestamps);
-		printf("modif_ctime: %s\n", ctime(&(file->modif_timestamps)));
-		printf("block 512 : %lld\n", file->block_512kb);
+		ft_printf("\n-- file --\n");
+		ft_printf("name: %s\n", file->pathname);
+		ft_printf("type: %c\n", file->file_type);
+		ft_printf("permission: %d\n", file->permission);
+		ft_printf("number link: %d\n", file->number_of_link);
+		ft_printf("owner: %s\n", file->owner_name);
+		ft_printf("group: %s\n", file->group_name);
+		ft_printf("size_byte: %ld\n", file->size_byte);
+		ft_printf("modif_timestamps: %ld\n", file->modif_timestamps);
+		ft_printf("modif_ctime: %s\n", ctime(&(file->modif_timestamps)));
+		ft_printf("block 512 : %lld\n", file->block_512kb);
 		if (file->file_type == 'b' || file->file_type == 'c')
 		{
-			printf("major : %u\n", file->major);
-			printf("minor : %u\n", file->minor);
+			ft_printf("major : %u\n", file->major);
+			ft_printf("minor : %u\n", file->minor);
 		}
-		printf("my_adress: %p\n", file);
-		printf("adress next: %p\n", file->next);
+		ft_printf("my_adress: %p\n", file);
+		ft_printf("adress next: %p\n", file->next);
 
-		//printf("last_modif: %s", ctime(&(file->last_modif)));
-		printf("----------\n");
+		//ft_printf("last_modif: %s", ctime(&(file->last_modif)));
+		ft_printf("----------\n");
 		file = file->next;
 	}
 	file = tmp;

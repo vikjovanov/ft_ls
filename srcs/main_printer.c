@@ -16,34 +16,29 @@ void	regular_print(t_file *lst_file, t_field *min_field)
 {
 	if (g_global.params & PARAM_L)
 	{
-	printf("%*d ", min_field->n_link, lst_file->number_of_link);
-	printf("%*s  ", min_field->user_name, lst_file->owner_name);
-	printf("%*s  ", min_field->group_name, lst_file->group_name);
-	//if (ft_strchr("bc", lst_file->file_type))
-	//	printf("%u", lst_file->major);
-	printf("%*ld ", min_field->size_byte, lst_file->size_byte);
-	printf("%s ", lst_file->modif_month);
-	printf("%s ", lst_file->modif_day);
-	if (lst_file->modif_hours != NULL)
-		printf("%s ", lst_file->modif_hours);
+	ft_printf("%*d ", min_field->n_link, lst_file->number_of_link);
+	ft_printf("%-*s  ", min_field->user_name, lst_file->owner_name);
+	ft_printf("%-*s  ", min_field->group_name, lst_file->group_name);
+	if (ft_strchr("bc", lst_file->file_type))
+		ft_printf("%*u, ", min_field->major, lst_file->major);
 	else
-		printf("%s ", lst_file->modif_years);
+		ft_printf("%*s", min_field->major + 2, "");
+	if (ft_strchr("bc", lst_file->file_type))
+		ft_printf("%*u ", min_field->size_byte, lst_file->minor);
+	else
+		ft_printf("%*ld ", min_field->size_byte, lst_file->size_byte);
+	ft_printf("%s ", lst_file->modif_month);
+	ft_printf("%s ", lst_file->modif_day);
+	if (lst_file->modif_hours != NULL)
+		ft_printf("%*s ", min_field->modif_hy, lst_file->modif_hours);
+	else
+		ft_printf("%*s ", min_field->modif_hy, lst_file->modif_years);
 	}
 	if (lst_file->file_type != 'l')
-		printf("%s\n", lst_file->pathname);
+		ft_printf("%s\n", lst_file->pathname);
 	else
-		printf("%s -> %s\n", lst_file->pathname, lst_file->symlink);
+		ft_printf("%s -> %s\n", lst_file->pathname, lst_file->symlink);
 
-}
-
-void	special_print(t_file *lst_file, t_field *min_field)
-{
-	if (g_global.params & PARAM_L)
-	{
-	printf("%*d ", min_field->n_link, lst_file->number_of_link);
-	printf("%*s  ", min_field->user_name, lst_file->owner_name);
-	printf("%*s  ", min_field->group_name, lst_file->group_name);
-	}
 }
 
 void		permission_print(t_file *lst_file)
@@ -67,9 +62,7 @@ void		permission_print(t_file *lst_file)
 		ft_printf("%c", (lst_file->permission & S_IXOTH) ? 't' : 'T');
 	else
 		ft_printf("%c", (lst_file->permission & S_IXOTH) ? 'x' : '-');
-	ft_printf("%2s", "");
-
-
+	ft_printf("%-2s", (lst_file->has_xattr) == 1 ? "@" : "");
 }
 
 t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
@@ -78,21 +71,18 @@ t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 
 	min_field_width = find_min_field_width(lst_file);
 	if (print_mult_dir == 1)
-		printf("%s%s:\n", (LST_DIR->parent == NULL) ? "" : LST_DIR->parent,
+		ft_printf("%s%s:\n", (LST_DIR->parent == NULL) ? "" : LST_DIR->parent,
 			LST_DIR->pathname);
-	if ((PARAMS & PARAM_L) && print_mult_dir)
-		printf("total %lld\n", total_block(lst_file));
+	if ((PARAMS & PARAM_L) && print_mult_dir != 2)
+		ft_printf("total %lld\n", total_block(lst_file));
 	while (lst_file != NULL)
 	{
 		if (PARAMS & PARAM_L)
 			permission_print(lst_file);
-		if (ft_strchr("spdl-", lst_file->file_type))
-			regular_print(lst_file, min_field_width);
-		else if (ft_strchr("bc", lst_file->file_type))
-			special_print(lst_file, min_field_width);
+		regular_print(lst_file, min_field_width);
 		lst_file = del_front_file(lst_file);
 	}
 	if (length_dir(LST_DIR) > 1)
-		printf("\n");
+		ft_printf("\n");
 	return (lst_file);
 }
