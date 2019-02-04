@@ -25,6 +25,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+//////////
+#include <sys/acl.h>
+
 
 #include "../libft/includes/libft.h"
 
@@ -46,6 +49,7 @@ typedef struct 		s_file
 	char			file_type;
 	int				permission;
 	int				has_xattr;
+	int				has_acl;
 	int				number_of_link;
 	char			*owner_name;
 	char			*group_name;
@@ -121,43 +125,55 @@ int		arg_checker(int argc, char **argv);
 */
 
 long	ft_exp_l(long n, int exp);
-char	*quadruple_join(char *str1, char *str2, char *str3, char *str4);
+void	exit_failure(void);
 
 /*
 ** lst_dir
 */
 
 t_dir	*new_dir(void);
-int		is_empty_dir(t_dir *dir);
+t_dir	*insert_child_dir(t_dir *lst_dir, t_dir	*new_dirs);
+t_dir	*fill_lst_dir(t_file *lst_file, t_dir *lst_dir);
 t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent);
-t_dir	*insert_after_elem_dir(t_dir *dir, t_dir *ref_dir,
-	char *path, char *parent);
-t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
-	char *path, char *parent);
 t_dir	*insert_back_dir(t_dir *dir, char *path, char *parent);
+
+int		is_empty_dir(t_dir *dir);
 t_dir	*del_back_dir(t_dir *dir);
 t_dir	*del_front_dir(t_dir *dir);
 t_dir	*clear_dir(t_dir *dir);
 size_t	length_dir(t_dir *dir);
-
 ///////////////////////////////////////////////////////
-
 void	display_lst_dir(t_dir *dir);
+
+//A SUPPRIMER //t_dir	*insert_after_elem_dir(t_dir *dir, t_dir *ref_dir,/
+//	char *path, char *parent);
+//t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
+//	char *path, char *parent);
+
 
 /*
 ** lst_file
 */
 
 t_file		*new_file(void);
-t_file	*insert_back_file(t_file *lst_file, struct stat *file,
+t_file		*fill_link(t_file *new, struct stat *file, char *file_name, char *path);
+t_file		*insert_back_file(t_file *lst_file, struct stat *file,
 	char *file_name, char *path);
-void	display_lst_file(t_file *file);
+t_file		*move_front_file(t_file *lst_file, t_file *element);
+
 int		is_empty_file(t_file *file);
 t_file	*del_back_file(t_file *file);
 t_file	*del_front_file(t_file *file);
 t_file	*clear_file(t_file *file);
 size_t	length_file(t_file *file);
-t_file	*move_front_file(t_file *lst_file, t_file *element);
+
+int		fill_xattr(char *path);
+char	set_file_type(struct stat *file);
+char	*set_symlink(char *path, char *name_file);
+int		fill_last_modif(t_file *new, struct stat *file);
+void	set_major_minor(t_file *new, struct stat *file);
+///////////////////////////////////////////////////////
+void	display_lst_file(t_file *file);
 
 
 /*

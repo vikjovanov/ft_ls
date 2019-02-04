@@ -12,14 +12,16 @@
 
 #include "ft_ls.h"
 
-static int	fill_dir_or_file(char **argv)
+static int	fill_dir_or_file(char **argv, int *params_step,
+	int (*stat)(const char*, struct stat*))
 {
 	struct stat try_dirfile;
 	int			i;
 
 	i = -1;
 	argv = order_by_lexic(argv);
-	while (argv[++i])
+	*params_step = (*params_step == 0) ? 1 : *params_step;
+	while (argv[++i] && (*params_step)++)
 		if (stat(argv[i], &try_dirfile) != -1)
 		{
 			if (S_ISDIR(try_dirfile.st_mode))
@@ -78,13 +80,13 @@ int			arg_checker(int argc, char **argv)
 			break ;
 	if (*argv != NULL)
 	{
-		if (fill_dir_or_file(&(*argv)) == 0)
+		if (fill_dir_or_file(&(*argv), &params_step, (PARAMS & PARAM_L) ? &lstat : &stat) == 0)
 			return (0);
+		if (params_step > 2)
+			return (2);
 	}
 	else
-	{
-		if ((LST_DIR = insert_front_dir(LST_DIR, ".", NULL)) == NULL)
+		if ((LST_DIR = insert_back_dir(LST_DIR, ".", NULL)) == NULL)
 			return (0);
-	}
 	return (1);
 }

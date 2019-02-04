@@ -48,8 +48,8 @@ t_dir	*del_front_dir(t_dir *dir)
 	if (is_empty_dir(dir))
 		return (NULL);
 	tmp = dir->next;
-	ft_memdel((void**)&dir->parent);
-	ft_memdel((void**)&dir->pathname);
+	ft_memdel((void**)&(dir->parent));
+	ft_memdel((void**)&(dir->pathname));
 	dir->next = NULL;
 	ft_memdel((void**)&dir);
 	return (tmp);

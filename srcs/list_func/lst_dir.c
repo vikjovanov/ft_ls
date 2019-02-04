@@ -17,6 +17,46 @@ t_dir	*new_dir(void)
 	return (NULL);
 }
 
+t_dir	*insert_child_dir(t_dir *lst_dir, t_dir	*new_dirs)
+{
+	t_dir	*tmp;
+
+	if (new_dirs == NULL)
+		return (lst_dir);
+	tmp = new_dirs;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = lst_dir->next;
+	lst_dir->next = new_dirs;
+	return (lst_dir);
+}
+
+t_dir	*fill_lst_dir(t_file *lst_file, t_dir *lst_dir)
+{
+	t_file	*tmp;
+	t_dir	*new_dirs;
+	char	*parent;
+
+	tmp = lst_file;
+	new_dirs = new_dir();
+	parent = NULL;
+	while (tmp != NULL)
+	{
+		if ((parent = (LST_DIR->parent == NULL) ? ft_strdup(LST_DIR->pathname)
+			: ft_strjoin(LST_DIR->parent, LST_DIR->pathname)) == NULL)
+			return (NULL);
+		if (tmp->file_type == 'd' && !(ft_strequ(tmp->pathname, ".")
+			|| ft_strequ(tmp->pathname, "..")))
+			new_dirs = insert_back_dir(new_dirs, tmp->pathname,
+				parent);
+		ft_memdel((void**)&(parent));
+		tmp = tmp->next;
+	}
+	lst_dir = insert_child_dir(lst_dir, new_dirs);
+	new_dirs = NULL;
+	return (lst_dir);
+}
+
 t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
 {
 	t_dir *new;
@@ -42,28 +82,6 @@ t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
 	return (new);
 
 }
-/*
-t_dir	*insert_after_elem_dir(t_dir *dir, t_dir *ref_dir,
-	char *path, char *parent)
-{
-	t_dir *new;
-
-	new = malloc(sizeof(*new));
-	new->parent = parent;
-	new->pathname = path;
-}
-
-t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
-	char *path, char *parent)
-{
-	t_dir *new;
-
-	new = malloc(sizeof(*new));
-	new->parent = parent;
-	new->pathname = path;
-
-}
-*/
 
 t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
 {
@@ -80,11 +98,12 @@ t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
 	else
 	{
 		new->parent = ft_strdup(parent);
-		new->pathname = ft_strjoin("/", path);
+		//new->pathname = ft_strjoin("/", path);
+		new->pathname = (ft_strequ(parent, "/")) ? ft_strdup(path) : ft_strjoin("/", path);
 	}
-	if (new->parent == NULL || new->pathname == NULL)
-		return (NULL);
 	new->next = NULL;
+	if (new->parent == NULL || new->pathname == NULL)
+		return (del_front_dir(new));
 	if (is_empty_dir(dir))
 		return (new);
 	tmp = dir;

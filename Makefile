@@ -18,7 +18,7 @@ LIBFT_LIB= libft/libft.a
 SRCS= ft_ls.c arg_checker.c generic_func.c error.c main_printer.c recurse_nav.c \
 		gen_printer.c
 SRCS+= list_func/lst_dir.c list_func/lst_dir_ext.c \
-		list_func/lst_file.c list_func/lst_file_ext.c
+		list_func/lst_file.c list_func/lst_file_ext.c list_func/lst_fill_file.c
 SRCS+= order/order_by.c order/lst_order_file.c order/order_by_time.c
 SRCS_DIR=srcs/
 

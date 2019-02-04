@@ -28,30 +28,34 @@ int		fill_lst_file(DIR *current_dir, char *path)
 			generic_error(dir_element->d_name);
 		if ((LST_FILE = insert_back_file(LST_FILE, &infos_element,
 				dir_element->d_name, pathname)) == NULL)
+		{
+			ft_memdel((void**)&(pathname));
 			return (0);
+		}
+		ft_memdel((void**)&(pathname));
 	}
 	else
 		return (-1);
 	return (1);
 }
 
+static int 	free_path(char *path)
+{
+	ft_memdel((void**)&(path));
+	return (1);
+}
+
 int		recurse_nav(void)
 {
-	DIR *current_dir;
+	DIR 	*current_dir;
 	char	*path;
 	int		result;
 	char	*tmp;
 
 	result = 0;
-	//if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, "."))
-	//	path = "./";
-	//else if (ft_strequ(LST_DIR->parent, "") && ft_strequ(LST_DIR->pathname, ".."))
-	//	path = "../";
-	//else if (LST_DIR->parent == NULL)
-	//	path = ft_strdup(LST_DIR->pathname);
 	tmp = ft_strjoin(LST_DIR->parent, LST_DIR->pathname);
 	path = ft_strjoin(tmp, "/");
-	free(tmp);
+	ft_memdel((void**)&(tmp));
 	if (path == NULL)
 		return (0);
 	if ((current_dir = opendir(path)))
@@ -61,11 +65,11 @@ int		recurse_nav(void)
 			if ((result = fill_lst_file(current_dir, path)) == -1)
 				break ;
 			else if (result == 0)
-				return (0);
+				return (!free_path(path));
 		}
 		closedir(current_dir);
 	}
 	else
 		generic_error(LST_DIR->pathname);
-	return (1);
+	return (!free_path(path));
 }

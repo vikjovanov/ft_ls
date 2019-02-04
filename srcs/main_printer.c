@@ -34,10 +34,11 @@ void	regular_print(t_file *lst_file, t_field *min_field)
 	else
 		ft_printf("%*s ", min_field->modif_hy, lst_file->modif_years);
 	}
-	if (lst_file->file_type != 'l')
-		ft_printf("%s\n", lst_file->pathname);
-	else
+	if (lst_file->file_type == 'l' && (PARAMS & PARAM_L))
 		ft_printf("%s -> %s\n", lst_file->pathname, lst_file->symlink);
+	else
+		ft_printf("%s\n", lst_file->pathname);
+
 
 }
 
@@ -84,5 +85,6 @@ t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 	}
 	if (length_dir(LST_DIR) > 1)
 		ft_printf("\n");
+	ft_memdel((void**)&(min_field_width));
 	return (lst_file);
 }
