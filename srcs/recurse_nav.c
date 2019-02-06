@@ -12,6 +12,12 @@
 
 #include "ft_ls.h"
 
+static int 	free_path(char *path)
+{
+	ft_memdel((void**)&(path));
+	return (1);
+}
+
 int		fill_lst_file(DIR *current_dir, char *path)
 {
 	struct dirent *dir_element;
@@ -25,23 +31,17 @@ int		fill_lst_file(DIR *current_dir, char *path)
 		if ((pathname = ft_strjoin(path, dir_element->d_name)) == NULL)
 			return (0);
 		if (lstat(pathname, &infos_element) == -1)
-			generic_error(dir_element->d_name);
+		{
+			//generic_error(dir_element->d_name);
+			return (1);
+		}
 		if ((LST_FILE = insert_back_file(LST_FILE, &infos_element,
 				dir_element->d_name, pathname)) == NULL)
-		{
-			ft_memdel((void**)&(pathname));
-			return (0);
-		}
+			return (free_path(pathname));
 		ft_memdel((void**)&(pathname));
 	}
 	else
 		return (-1);
-	return (1);
-}
-
-static int 	free_path(char *path)
-{
-	ft_memdel((void**)&(path));
 	return (1);
 }
 
@@ -54,10 +54,10 @@ int		recurse_nav(void)
 
 	result = 0;
 	tmp = ft_strjoin(LST_DIR->parent, LST_DIR->pathname);
-	path = ft_strjoin(tmp, "/");
-	ft_memdel((void**)&(tmp));
+	path = (ft_strequ(tmp, "/")) ? ft_strdup(tmp) : ft_strjoin(tmp, "/");
 	if (path == NULL)
-		return (0);
+		return (!free_path(tmp));
+	ft_memdel((void**)&(tmp));
 	if ((current_dir = opendir(path)))
 	{
 		while (current_dir)
@@ -71,5 +71,5 @@ int		recurse_nav(void)
 	}
 	else
 		generic_error(LST_DIR->pathname);
-	return (!free_path(path));
+	return (free_path(path));
 }

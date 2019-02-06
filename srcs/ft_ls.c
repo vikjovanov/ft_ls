@@ -38,7 +38,7 @@ int		main(int argc, char **argv)
 	{
 		LST_FILE = new_file();
 		if (!(recurse_nav()))
-			
+			exit(EXIT_FAILURE);
 		//display_lst_file(LST_FILE);
 		//display_lst_dir(LST_DIR);
 		LST_FILE = lst_order_file(LST_FILE);
@@ -47,7 +47,7 @@ int		main(int argc, char **argv)
 		LST_FILE = dispatch_print(LST_FILE, multi_dir);
 		LST_DIR = del_front_dir(LST_DIR);
 		ft_memdel((void**)&(LST_FILE));
-		multi_dir = ((PARAMS & PARAM_RR) ? 1 : 0);
+		multi_dir = ((PARAMS & PARAM_RR || res == 2) ? 1 : 0);
 	}
 	return (0);
 }

@@ -98,7 +98,6 @@ t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
 	else
 	{
 		new->parent = ft_strdup(parent);
-		//new->pathname = ft_strjoin("/", path);
 		new->pathname = (ft_strequ(parent, "/")) ? ft_strdup(path) : ft_strjoin("/", path);
 	}
 	new->next = NULL;

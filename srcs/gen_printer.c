@@ -49,7 +49,7 @@ static t_field	*set_min_field(void)
 	min_field_width->group_name = 0;
 	min_field_width->major = -2 ;
 	min_field_width->size_byte = 1;
-	min_field_width->modif_hy = 0;
+	min_field_width->modif_hy = 5;
 	return (min_field_width);
 }
 

@@ -25,7 +25,7 @@ void	set_major_minor(t_file *new, struct stat *file)
 }
 
 /*
-** (((3600*24)*30)*6)=6mois=15552000
+** (((3600*24)*30)*6)=6mois=1.577e+7
 */
 
 int		fill_last_modif(t_file *new, struct stat *file)
@@ -39,7 +39,7 @@ int		fill_last_modif(t_file *new, struct stat *file)
 	new->modif_timestamps = file->st_mtime;
 	if ((diff = timer - file->st_mtime) < 0)
 		diff *= -1;
-	if ((timer - file->st_mtime) < 15552000)
+	if ((timer - file->st_mtime) < 1.577e+7)
 		new->modif_hours = ft_strsub(ctime(&(file->st_mtime)), 11, 5);
 	else
 		new->modif_years = ft_strsub(ctime(&(file->st_mtime)), 20, 4);
@@ -73,7 +73,7 @@ char	*set_symlink(char *path, char *name_file)
 
 	if ((symlink = ft_strnew(MAX_LENGTH_FILENAME)) == NULL)
 		return (NULL);
-	if ((size_sym = readlink(path, symlink, sizeof(symlink))) < 0)
+	if ((size_sym = readlink(path, symlink, MAX_LENGTH_FILENAME)) < 0)
 		generic_error(name_file);
 	return (symlink);
 }

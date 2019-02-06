@@ -72,16 +72,20 @@ t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 
 	min_field_width = find_min_field_width(lst_file);
 	if (print_mult_dir == 1)
-		ft_printf("%s%s:\n", (LST_DIR->parent == NULL) ? "" : LST_DIR->parent,
+		ft_printf("%s%s:\n", (LST_DIR->parent == NULL
+			|| LST_DIR->parent == "/") ? "" : LST_DIR->parent,
 			LST_DIR->pathname);
-	if ((PARAMS & PARAM_L) && print_mult_dir != 2)
-		ft_printf("total %lld\n", total_block(lst_file));
-	while (lst_file != NULL)
+	if (length_file(lst_file) > 0)
 	{
-		if (PARAMS & PARAM_L)
-			permission_print(lst_file);
-		regular_print(lst_file, min_field_width);
-		lst_file = del_front_file(lst_file);
+		if ((PARAMS & PARAM_L) && print_mult_dir != 2)
+			ft_printf("total %lld\n", total_block(lst_file));
+		while (lst_file != NULL)
+		{
+			if (PARAMS & PARAM_L)
+				permission_print(lst_file);
+			regular_print(lst_file, min_field_width);
+			lst_file = del_front_file(lst_file);
+		}
 	}
 	if (length_dir(LST_DIR) > 1)
 		ft_printf("\n");
