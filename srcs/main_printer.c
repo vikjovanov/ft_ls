@@ -16,33 +16,31 @@ void	regular_print(t_file *lst_file, t_field *min_field)
 {
 	if (g_global.params & PARAM_L)
 	{
-	ft_printf("%*d ", min_field->n_link, lst_file->number_of_link);
-	ft_printf("%-*s  ", min_field->user_name, lst_file->owner_name);
-	ft_printf("%-*s  ", min_field->group_name, lst_file->group_name);
-	if (ft_strchr("bc", lst_file->file_type))
-		ft_printf("%*u, ", min_field->major, lst_file->major);
-	else
-		ft_printf("%*s", min_field->major + 2, "");
-	if (ft_strchr("bc", lst_file->file_type))
-		ft_printf("%*u ", min_field->size_byte, lst_file->minor);
-	else
-		ft_printf("%*ld ", min_field->size_byte, lst_file->size_byte);
-	ft_printf("%s ", lst_file->modif_month);
-	ft_printf("%s ", lst_file->modif_day);
-	if (lst_file->modif_hours != NULL)
-		ft_printf("%*s ", min_field->modif_hy, lst_file->modif_hours);
-	else
-		ft_printf("%*s ", min_field->modif_hy, lst_file->modif_years);
+		ft_printf("%*d ", min_field->n_link, lst_file->number_of_link);
+		ft_printf("%-*s  ", min_field->user_name, lst_file->owner_name);
+		ft_printf("%-*s  ", min_field->group_name, lst_file->group_name);
+		if (ft_strchr("bc", lst_file->file_type))
+			ft_printf("%*u, ", min_field->major, lst_file->major);
+		else
+			ft_printf("%*s", min_field->major + 2, "");
+		if (ft_strchr("bc", lst_file->file_type))
+			ft_printf("%*u ", min_field->size_byte, lst_file->minor);
+		else
+			ft_printf("%*ld ", min_field->size_byte, lst_file->size_byte);
+		ft_printf("%s ", lst_file->modif_month);
+		ft_printf("%s ", lst_file->modif_day);
+		if (lst_file->modif_hours != NULL)
+			ft_printf("%*s ", min_field->modif_hy, lst_file->modif_hours);
+		else
+			ft_printf("%*s ", min_field->modif_hy, lst_file->modif_years);
 	}
 	if (lst_file->file_type == 'l' && (PARAMS & PARAM_L))
 		ft_printf("%s -> %s\n", lst_file->pathname, lst_file->symlink);
 	else
 		ft_printf("%s\n", lst_file->pathname);
-
-
 }
 
-void		permission_print(t_file *lst_file)
+void	permission_print(t_file *lst_file)
 {
 	ft_printf("%c", lst_file->file_type);
 	ft_printf("%c", (lst_file->permission & S_IRUSR) ? 'r' : '-');
@@ -56,17 +54,20 @@ void		permission_print(t_file *lst_file)
 	if ((S_ISGID & lst_file->permission) != 0)
 		ft_printf("%c", (lst_file->permission & S_IXGRP) ? 's' : 'S');
 	else
-		ft_printf("%c", (lst_file->permission & S_IXGRP) ? 'x' : '-');	
+		ft_printf("%c", (lst_file->permission & S_IXGRP) ? 'x' : '-');
 	ft_printf("%c", (lst_file->permission & S_IROTH) ? 'r' : '-');
 	ft_printf("%c", (lst_file->permission & S_IWOTH) ? 'w' : '-');
 	if ((S_ISVTX & lst_file->permission) != 0)
 		ft_printf("%c", (lst_file->permission & S_IXOTH) ? 't' : 'T');
 	else
 		ft_printf("%c", (lst_file->permission & S_IXOTH) ? 'x' : '-');
-	ft_printf("%-2s", (lst_file->has_xattr) == 1 ? "@" : "");
+	if (lst_file->has_xattr == 1)
+		ft_printf("%-2s", "@");
+	else
+		ft_printf("%-2s", (lst_file->has_xattr) == 2 ? "+" : "");
 }
 
-t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
+t_file	*dispatch_print(t_file *lst_file, int print_mult_dir, int print_newline)
 {
 	t_field *min_field_width;
 
@@ -87,8 +88,9 @@ t_file	*dispatch_print(t_file *lst_file, int print_mult_dir)
 			lst_file = del_front_file(lst_file);
 		}
 	}
-	if (length_dir(LST_DIR) > 1)
-		ft_printf("\n");
+	if (print_newline)
+		if (print_mult_dir == 2 || length_dir(LST_DIR) > 1)
+			ft_printf("\n");
 	ft_memdel((void**)&(min_field_width));
 	return (lst_file);
 }

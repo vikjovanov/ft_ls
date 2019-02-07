@@ -13,38 +13,34 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/xattr.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <grp.h>
-#include <time.h>
-#include <fcntl.h> 
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-//////////
-#include <sys/acl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/xattr.h>
+# include <dirent.h>
+# include <unistd.h>
+# include <pwd.h>
+# include <grp.h>
+# include <time.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <string.h>
+# include <errno.h>
+# include <sys/acl.h>
+# include "../libft/includes/libft.h"
 
+# define PARAM_L 1
+# define PARAM_R 2
+# define PARAM_A 4
+# define PARAM_RR 8
+# define PARAM_T 16
+# define ACCEPTED_PARAMS "lraRt"
 
-#include "../libft/includes/libft.h"
+# define MAX_LENGTH_FILENAME 4096
 
+# define MINORBITS        24
+# define MINORMASK        16777215
 
-#define PARAM_L 1
-#define PARAM_R 2
-#define PARAM_A 4
-#define PARAM_RR 8
-#define PARAM_T 16
-#define ACCEPTED_PARAMS "lraRt"
-
-#define MAX_LENGTH_FILENAME 4096
-
-#define MINORBITS        24
-#define MINORMASK        16777215
-
-typedef struct 		s_file 
+typedef struct		s_file
 {
 	char			file_type;
 	int				permission;
@@ -67,14 +63,14 @@ typedef struct 		s_file
 	struct s_file	*next;
 }					t_file;
 
-typedef struct 		s_dir 
+typedef struct		s_dir
 {
 	char			*parent;
 	char			*pathname;
 	struct s_dir	*next;
 }					t_dir;
 
-typedef struct 		s_field
+typedef struct		s_field
 {
 	int				n_link;
 	int				user_name;
@@ -93,7 +89,7 @@ typedef struct 		s_field
 ** bit 16: -t
 */
 
-typedef struct 		s_global
+typedef struct		s_global
 {
 	char			params;
 	t_file			*lst_file;
@@ -102,98 +98,87 @@ typedef struct 		s_global
 
 extern t_global g_global;
 
-#define LST_DIR (g_global.lst_dir)
-#define LST_FILE (g_global.lst_file)
-#define PARAMS (g_global.params)
-
+# define LST_DIR (g_global.lst_dir)
+# define LST_FILE (g_global.lst_file)
+# define PARAMS (g_global.params)
 
 /*
 ** error
 */
 
-void	no_such_error(const char *format);
-void	generic_error(const char *error_element);
+void				no_such_error(const char *format);
+void				generic_error(const char *error_element);
 
 /*
 ** arg_checker
 */
 
-int		arg_checker(int argc, char **argv);
+int					arg_checker(int argc, char **argv);
 
 /*
 ** generic_func
 */
 
-long	ft_exp_l(long n, int exp);
-void	exit_failure(void);
+long				ft_exp_l(long n, int exp);
+void				exit_failure(void);
+int 				free_file(t_file *path);
 
 /*
 ** lst_dir
 */
 
-t_dir	*new_dir(void);
-t_dir	*insert_child_dir(t_dir *lst_dir, t_dir	*new_dirs);
-t_dir	*fill_lst_dir(t_file *lst_file, t_dir *lst_dir);
-t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent);
-t_dir	*insert_back_dir(t_dir *dir, char *path, char *parent);
+t_dir				*new_dir(void);
+t_dir				*insert_child_dir(t_dir *lst_dir, t_dir	*new_dirs);
+t_dir				*fill_lst_dir(t_file *lst_file, t_dir *lst_dir);
+t_dir				*insert_front_dir(t_dir *dir, char *path, char *parent);
+t_dir				*insert_back_dir(t_dir *dir, char *path, char *parent);
 
-int		is_empty_dir(t_dir *dir);
-t_dir	*del_back_dir(t_dir *dir);
-t_dir	*del_front_dir(t_dir *dir);
-t_dir	*clear_dir(t_dir *dir);
-size_t	length_dir(t_dir *dir);
-///////////////////////////////////////////////////////
-void	display_lst_dir(t_dir *dir);
-
-//A SUPPRIMER //t_dir	*insert_after_elem_dir(t_dir *dir, t_dir *ref_dir,/
-//	char *path, char *parent);
-//t_dir	*insert_before_elem_dir(t_dir *dir, t_dir *ref_dir,
-//	char *path, char *parent);
-
+int					is_empty_dir(t_dir *dir);
+t_dir				*del_back_dir(t_dir *dir);
+t_dir				*del_front_dir(t_dir *dir);
+t_dir				*clear_dir(t_dir *dir);
+size_t				length_dir(t_dir *dir);
 
 /*
 ** lst_file
 */
 
-t_file		*new_file(void);
-t_file		*fill_link(t_file *new, struct stat *file, char *file_name, char *path);
-t_file		*insert_back_file(t_file *lst_file, struct stat *file,
+t_file				*new_file(void);
+t_file				*fill_link(t_file *new, struct stat *file, char *file_name,
+	char *path);
+t_file				*insert_back_file(t_file *lst_file, struct stat *file,
 	char *file_name, char *path);
-t_file		*move_front_file(t_file *lst_file, t_file *element);
+t_file				*move_front_file(t_file *lst_file, t_file *element);
 
-int		is_empty_file(t_file *file);
-t_file	*del_back_file(t_file *file);
-t_file	*del_front_file(t_file *file);
-t_file	*clear_file(t_file *file);
-size_t	length_file(t_file *file);
+int					is_empty_file(t_file *file);
+t_file				*del_back_file(t_file *file);
+t_file				*del_front_file(t_file *file);
+t_file				*clear_file(t_file *file);
+size_t				length_file(t_file *file);
 
-int		fill_xattr(char *path);
-char	set_file_type(struct stat *file);
-char	*set_symlink(char *path, char *name_file);
-int		fill_last_modif(t_file *new, struct stat *file);
-void	set_major_minor(t_file *new, struct stat *file);
-///////////////////////////////////////////////////////
-void	display_lst_file(t_file *file);
-
+int					fill_xattr(char *path, char file_type);
+char				set_file_type(struct stat *file);
+char				*set_symlink(char *path, char *name_file);
+int					fill_last_modif(t_file *new, struct stat *file);
+void				set_major_minor(t_file *new, struct stat *file);
 
 /*
 ** order
 */
 
-char		**order_by_lexic(char **str);
-t_file		*lst_order_file(t_file *lst_file);
-t_file		*lst_order_by_time(t_file *lst_file);
-
+char				**order_by_lexic(char **str);
+t_file				*lst_order_file(t_file *lst_file);
+t_file				*lst_order_by_time(t_file *lst_file);
 
 /*
 ** print
 */
 
-t_file		*dispatch_print(t_file *lst_file, int print_mult_dir);
-t_field		*find_min_field_width(t_file *file);
-long long	total_block(t_file *lst_file);
+t_file				*dispatch_print(t_file *lst_file, int print_mult_dir,
+	int print_newline);
+t_field				*find_min_field_width(t_file *file);
+long long			total_block(t_file *lst_file);
 
-
-int		recurse_nav(void);
+int					recurse_nav(int multi_dir);
 
 #endif

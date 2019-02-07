@@ -71,7 +71,7 @@ t_file	*clear_file(t_file *file)
 
 size_t	length_file(t_file *file)
 {
-	size_t size;
+	size_t	size;
 	t_file	*tmp;
 
 	size = 0;

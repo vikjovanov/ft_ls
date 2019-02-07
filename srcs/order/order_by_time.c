@@ -72,8 +72,7 @@ static t_file	*find_biggest_time(t_file *lst_search, int *swapped)
 	return (node_to_deplace);
 }
 
-
-t_file	*lst_order_by_time(t_file *lst_file)
+t_file			*lst_order_by_time(t_file *lst_file)
 {
 	t_file	*node_to_deplace;
 	t_file	*tmp;

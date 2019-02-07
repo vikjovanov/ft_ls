@@ -24,10 +24,6 @@ void	set_major_minor(t_file *new, struct stat *file)
 	new->minor = ((file->st_rdev) & MINORMASK);
 }
 
-/*
-** (((3600*24)*30)*6)=6mois=1.577e+7
-*/
-
 int		fill_last_modif(t_file *new, struct stat *file)
 {
 	time_t timer;
@@ -78,31 +74,20 @@ char	*set_symlink(char *path, char *name_file)
 	return (symlink);
 }
 
-int		fill_xattr(char *path)
+int		fill_xattr(char *path, char file_type)
 {
-	int 		size;
-	//acl_t		acl;
-	//acl_type_t  entry;
-	//
-	//struct stat *test = file;
-	//test= NULL;
-	//
-	size = 0;
-	size = (int)listxattr(path, NULL, size, 0);
-	/*acl = acl_get_file(path, ACL_TYPE_ACCESS);
-	if (acl == NULL)
-	{
-		printf("path : %s\n", path);
-	}
-	else
-	{
-		printf("youpii\n");
-	}*/
+	int			size;
+	acl_t		acl;
 
-	if (size < 0)
-		return (-1);
-	else if (size == 0)
-		return (0);
-	else
+	size = 0;
+	acl = NULL;
+	if (file_type != 'l')
+		acl = acl_get_file(path, ACL_TYPE_EXTENDED);
+	size = (int)listxattr(path, NULL, size, XATTR_NOFOLLOW);
+	if (size >= 1)
 		return (1);
+	else if (size < 1 && acl != NULL)
+		return (2);
+	else
+		return (0);
 }

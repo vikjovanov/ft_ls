@@ -66,7 +66,7 @@ t_dir	*clear_dir(t_dir *dir)
 
 size_t	length_dir(t_dir *dir)
 {
-	size_t size;
+	size_t	size;
 	t_dir	*tmp;
 
 	size = 0;

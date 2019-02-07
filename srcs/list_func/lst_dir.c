@@ -17,7 +17,7 @@ t_dir	*new_dir(void)
 	return (NULL);
 }
 
-t_dir	*insert_child_dir(t_dir *lst_dir, t_dir	*new_dirs)
+t_dir	*insert_child_dir(t_dir *lst_dir, t_dir *new_dirs)
 {
 	t_dir	*tmp;
 
@@ -80,10 +80,9 @@ t_dir	*insert_front_dir(t_dir *dir, char *path, char *parent)
 	else
 		new->next = dir;
 	return (new);
-
 }
 
-t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
+t_dir	*insert_back_dir(t_dir *dir, char *path, char *parent)
 {
 	t_dir *new;
 	t_dir *tmp;
@@ -91,15 +90,14 @@ t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
 	if (path == NULL || (new = malloc(sizeof(*new))) == NULL)
 		return (NULL);
 	if (parent == NULL)
-	{
 		new->parent = ft_strdup("");
+	if (parent == NULL)
 		new->pathname = ft_strdup(path);
-	}
-	else
-	{
+	if (parent != NULL)
 		new->parent = ft_strdup(parent);
-		new->pathname = (ft_strequ(parent, "/")) ? ft_strdup(path) : ft_strjoin("/", path);
-	}
+	if (parent != NULL)
+		new->pathname = (ft_strequ(parent, "/"))
+			? ft_strdup(path) : ft_strjoin("/", path);
 	new->next = NULL;
 	if (new->parent == NULL || new->pathname == NULL)
 		return (del_front_dir(new));
@@ -112,27 +110,26 @@ t_dir		*insert_back_dir(t_dir *dir, char *path, char *parent)
 	return (dir);
 }
 
-
-///////////////////////////////////////////////////////
-
-void	display_lst_dir(t_dir *dir)
-{
-	t_dir *tmp;
-
-	tmp = dir;
-	if (is_empty_dir(dir))
-	{
-		ft_printf("--\n");
-		ft_printf("(null)\n");
-		ft_printf("--\n");
-	}
-	while (dir != NULL)
-	{
-		ft_printf("--\n");
-		ft_printf("path: %s\n", dir->pathname);
-		ft_printf("parent: %s\n", dir->parent);
-		ft_printf("--\n");
-		dir = dir->next;
-	}
-	dir = tmp;
-}
+/*
+** void	display_lst_dir(t_dir *dir)
+** {
+**	t_dir *tmp;
+**
+**	tmp = dir;
+**	if (is_empty_dir(dir))
+**	{
+**		ft_printf("--\n");
+**		ft_printf("(null)\n");
+**		ft_printf("--\n");
+**	}
+**	while (dir != NULL)
+**	{
+**		ft_printf("--\n");
+**		ft_printf("path: %s\n", dir->pathname);
+**		ft_printf("parent: %s\n", dir->parent);
+**		ft_printf("--\n");
+**		dir = dir->next;
+**	}
+**	dir = tmp;
+** }
+*/

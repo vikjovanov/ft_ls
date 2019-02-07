@@ -12,19 +12,23 @@
 
 #include "ft_ls.h"
 
-// MAJOR A GAUCHE ET MINOR A DROITE A LA PLACE DE SIZE_BYTE
+/*
+** MAJOR A GAUCHE ET MINOR A DROITE A LA PLACE DE SIZE_BYTE
+*/
 
-static void	min_field_width_supp(t_field *mfw, t_file *tmp)
+static void		min_field_width_supp(t_field *mfw, t_file *tmp)
 {
-	int min_field_minor = 3;
-	int	min_field_major = 3;
+	int min_field_minor;
+	int	min_field_major;
 
+	min_field_minor = 3;
+	min_field_major = 3;
 	if (tmp->modif_hours != NULL
 		&& (int)ft_strlen(tmp->modif_hours) > mfw->modif_hy)
-			mfw->modif_hy = (int)ft_strlen(tmp->modif_hours);
+		mfw->modif_hy = (int)ft_strlen(tmp->modif_hours);
 	if (tmp->modif_years != NULL
 		&& (int)ft_strlen(tmp->modif_years) > mfw->modif_hy)
-			mfw->modif_hy = (int)ft_strlen(tmp->modif_years);
+		mfw->modif_hy = (int)ft_strlen(tmp->modif_years);
 	if (tmp->file_type == 'c' || tmp->file_type == 'b')
 	{
 		if (min_field_major > mfw->major)
@@ -47,16 +51,16 @@ static t_field	*set_min_field(void)
 	min_field_width->n_link = 1;
 	min_field_width->user_name = 0;
 	min_field_width->group_name = 0;
-	min_field_width->major = -2 ;
+	min_field_width->major = -2;
 	min_field_width->size_byte = 1;
 	min_field_width->modif_hy = 5;
 	return (min_field_width);
 }
 
-t_field		*find_min_field_width(t_file *file)
+t_field			*find_min_field_width(t_file *file)
 {
 	t_field	*min_field_width;
-	t_file *tmp;
+	t_file	*tmp;
 
 	if (((min_field_width = set_min_field())) == NULL)
 		return (NULL);
@@ -77,10 +81,10 @@ t_field		*find_min_field_width(t_file *file)
 	return (min_field_width);
 }
 
-long long	total_block(t_file *lst_file)
+long long		total_block(t_file *lst_file)
 {
-	long long total;
-	t_file *tmp;
+	long long	total;
+	t_file		*tmp;
 
 	tmp = lst_file;
 	total = 0;

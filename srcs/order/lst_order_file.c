@@ -62,8 +62,6 @@ t_file	*lst_order_by_lexico(t_file *lst_file)
 	return (lst_file);
 }
 
-
-
 t_file	*lst_order_file(t_file *lst_file)
 {
 	if (PARAMS & PARAM_T)

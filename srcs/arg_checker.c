@@ -31,8 +31,7 @@ static int	fill_dir_or_file(char **argv, int *params_step,
 			}
 			else
 			{
-
-				if ((LST_FILE = insert_back_file(LST_FILE, &try_dirfile, 
+				if ((LST_FILE = insert_back_file(LST_FILE, &try_dirfile,
 					argv[i], argv[i])) == NULL)
 					return (0);
 			}
@@ -80,13 +79,13 @@ int			arg_checker(int argc, char **argv)
 			break ;
 	if (*argv != NULL)
 	{
-		if (fill_dir_or_file(&(*argv), &params_step, (PARAMS & PARAM_L) ? &lstat : &stat) == 0)
+		if (fill_dir_or_file(&(*argv), &params_step, (PARAMS & PARAM_L)
+			? &lstat : &stat) == 0)
 			return (0);
 		if (params_step > 2)
 			return (2);
 	}
-	else
-		if ((LST_DIR = insert_back_dir(LST_DIR, ".", NULL)) == NULL)
-			return (0);
+	else if ((LST_DIR = insert_back_dir(LST_DIR, ".", NULL)) == NULL)
+		return (0);
 	return (1);
 }
