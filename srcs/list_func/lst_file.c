@@ -24,10 +24,10 @@ int		fill_link_ext(t_file *new, struct stat *file, char *file_name)
 
 	usr_info = getpwuid(file->st_uid);
 	grp_info = getgrgid(file->st_gid);
-	new->owner_name = (usr_info != NULL) ? ft_strdup(usr_info->pw_name)
-		: ft_itoa((int)(file->st_uid));
-	new->group_name = (grp_info != NULL) ? ft_strdup(grp_info->gr_name)
-		: ft_itoa((int)(file->st_gid));
+	new->owner_name = (usr_info == NULL || PARAMS & PARAM_N) ?
+	ft_itoa((int)(file->st_uid)) : ft_strdup(usr_info->pw_name);
+	new->group_name = (grp_info == NULL || PARAMS & PARAM_N) ?
+	ft_itoa((int)(file->st_gid)) : ft_strdup(grp_info->gr_name);
 	new->pathname = ft_strdup(file_name);
 	if (!(new->owner_name) || !(new->group_name) || !(new->pathname))
 		return (0);

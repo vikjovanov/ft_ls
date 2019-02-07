@@ -18,13 +18,15 @@
 
 t_global	g_global = {0, NULL, NULL};
 
-int		free_file(t_file *path)
+static void	recurse_content(int multi_dir)
 {
-	ft_memdel((void**)&(path));
-	return (1);
+	LST_FILE = lst_order_file(LST_FILE);
+	if (PARAMS & PARAM_RR)
+		LST_DIR = fill_lst_dir(LST_FILE, LST_DIR);
+	LST_FILE = dispatch_print(LST_FILE, multi_dir, 1);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	int		multi_dir;
 	int		res;
@@ -37,17 +39,14 @@ int		main(int argc, char **argv)
 	else if (res == 2)
 		multi_dir = 1;
 	if (!(is_empty_file(LST_FILE)))
-		dispatch_print(LST_FILE, 2, 1);
-	while (free_file(LST_FILE) && !is_empty_dir(LST_DIR))
+		dispatch_print(LST_FILE, 2, (length_dir(LST_DIR)) >= 1 ? 1 : 0);
+	while (!is_empty_dir(LST_DIR))
 	{
+		LST_FILE = new_file();
 		if (recurse_nav(multi_dir))
-		{
-			LST_FILE = lst_order_file(LST_FILE);
-			if (PARAMS & PARAM_RR)
-				LST_DIR = fill_lst_dir(LST_FILE, LST_DIR);
-			LST_FILE = dispatch_print(LST_FILE, multi_dir, 1);
-		}
+			recurse_content(multi_dir);
 		LST_DIR = del_front_dir(LST_DIR);
+		ft_memdel((void**)&(LST_FILE));
 		multi_dir = ((PARAMS & PARAM_RR || res == 2) ? 1 : 0);
 	}
 	return (0);

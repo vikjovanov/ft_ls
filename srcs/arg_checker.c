@@ -41,6 +41,16 @@ static int	fill_dir_or_file(char **argv, int *params_step,
 	return (1);
 }
 
+static void	fill_params_ext(char params)
+{
+	if (ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params)) == PARAM_O)
+		PARAMS |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, 'l'));
+	if (ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params)) == PARAM_N)
+		PARAMS |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, 'l'));
+	if (ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params)) == PARAM_F)
+		PARAMS |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, 'a'));
+}
+
 static int	fill_params(char *params)
 {
 	int i;
@@ -51,7 +61,10 @@ static int	fill_params(char *params)
 	while (params[i + 1])
 	{
 		if ((ft_strchr(ACCEPTED_PARAMS, params[i + 1])) != NULL)
+		{
 			PARAMS |= ft_exp_l(2, ft_strclen(ACCEPTED_PARAMS, params[i + 1]));
+			fill_params_ext(params[i + 1]);
+		}
 		else
 		{
 			ft_printf("ft_ls: illegal option -- %c\n", params[i + 1]);
@@ -79,8 +92,8 @@ int			arg_checker(int argc, char **argv)
 			break ;
 	if (*argv != NULL)
 	{
-		if (fill_dir_or_file(&(*argv), &params_step, (PARAMS & PARAM_L)
-			? &lstat : &stat) == 0)
+		if (fill_dir_or_file(&(*argv), &params_step, ((PARAMS & PARAM_L)
+			|| (PARAMS & PARAM_P)) ? &lstat : &stat) == 0)
 			return (0);
 		if (params_step > 2)
 			return (2);

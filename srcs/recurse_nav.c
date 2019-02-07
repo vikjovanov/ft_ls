@@ -31,7 +31,7 @@ int					fill_lst_file(DIR *current_dir, char *path)
 		if ((pathname = ft_strjoin(path, dir_element->d_name)) == NULL)
 			return (0);
 		if (lstat(pathname, &infos_element) == -1)
-			return (1);
+			return (free_path(pathname));
 		if ((LST_FILE = insert_back_file(LST_FILE, &infos_element,
 				dir_element->d_name, pathname)) == NULL)
 			return (free_path(pathname));

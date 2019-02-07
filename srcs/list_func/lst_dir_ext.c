@@ -36,7 +36,7 @@ t_dir	*del_back_dir(t_dir *dir)
 	ft_memdel((void**)&dir->parent);
 	ft_memdel((void**)&dir->pathname);
 	dir->next = NULL;
-	ft_memdel((void**)&dir);
+	ft_memdel((void**)&(dir));
 	tmp2->next = NULL;
 	return (tmp);
 }
@@ -59,7 +59,7 @@ t_dir	*clear_dir(t_dir *dir)
 {
 	if (dir->next != NULL)
 		return (clear_dir(dir->next));
-	free(dir);
+	ft_memdel((void**)&(dir));
 	dir = NULL;
 	return (dir);
 }

@@ -33,8 +33,7 @@ t_file	*del_back_file(t_file *file)
 		tmp2 = file;
 		file = file->next;
 	}
-	free(file);
-	file = NULL;
+	ft_memdel((void**)&file);
 	tmp2->next = NULL;
 	return (tmp);
 }

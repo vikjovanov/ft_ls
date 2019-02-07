@@ -26,8 +26,8 @@ void	set_major_minor(t_file *new, struct stat *file)
 
 int		fill_last_modif(t_file *new, struct stat *file)
 {
-	time_t timer;
-	time_t diff;
+	time_t	timer;
+	time_t	diff;
 
 	timer = time(&timer);
 	new->modif_hours = NULL;
@@ -85,9 +85,18 @@ int		fill_xattr(char *path, char file_type)
 		acl = acl_get_file(path, ACL_TYPE_EXTENDED);
 	size = (int)listxattr(path, NULL, size, XATTR_NOFOLLOW);
 	if (size >= 1)
+	{
+		acl_free(acl);
 		return (1);
+	}
 	else if (size < 1 && acl != NULL)
+	{
+		acl_free(acl);
 		return (2);
+	}
 	else
+	{
+		acl_free(acl);
 		return (0);
+	}
 }

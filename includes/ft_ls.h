@@ -24,7 +24,6 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <string.h>
-# include <errno.h>
 # include <sys/acl.h>
 # include "../libft/includes/libft.h"
 
@@ -33,10 +32,13 @@
 # define PARAM_A 4
 # define PARAM_RR 8
 # define PARAM_T 16
-# define ACCEPTED_PARAMS "lraRt"
+# define PARAM_O 32
+# define PARAM_P 64
+# define PARAM_N 128
+# define PARAM_F 256
+# define ACCEPTED_PARAMS "lraRtopnf"
 
 # define MAX_LENGTH_FILENAME 4096
-
 # define MINORBITS        24
 # define MINORMASK        16777215
 
@@ -91,7 +93,7 @@ typedef struct		s_field
 
 typedef struct		s_global
 {
-	char			params;
+	int				params;
 	t_file			*lst_file;
 	t_dir			*lst_dir;
 }					t_global;
@@ -121,8 +123,7 @@ int					arg_checker(int argc, char **argv);
 
 long				ft_exp_l(long n, int exp);
 void				exit_failure(void);
-int					free_file(t_file *path);
-
+void				*free_file(t_file *path);
 /*
 ** lst_dir
 */

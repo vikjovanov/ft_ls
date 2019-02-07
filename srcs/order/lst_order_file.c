@@ -64,11 +64,14 @@ t_file	*lst_order_by_lexico(t_file *lst_file)
 
 t_file	*lst_order_file(t_file *lst_file)
 {
-	if (PARAMS & PARAM_T)
-		lst_file = lst_order_by_time(lst_file);
-	else
-		lst_file = lst_order_by_lexico(lst_file);
-	if (PARAMS & PARAM_R)
-		lst_file = lst_order_reverse(lst_file);
+	if (!(PARAMS & PARAM_F))
+	{
+		if (PARAMS & PARAM_T)
+			lst_file = lst_order_by_time(lst_file);
+		else
+			lst_file = lst_order_by_lexico(lst_file);
+		if (PARAMS & PARAM_R)
+			lst_file = lst_order_reverse(lst_file);
+	}
 	return (lst_file);
 }
