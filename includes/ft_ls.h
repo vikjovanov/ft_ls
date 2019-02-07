@@ -121,7 +121,7 @@ int					arg_checker(int argc, char **argv);
 
 long				ft_exp_l(long n, int exp);
 void				exit_failure(void);
-int 				free_file(t_file *path);
+int					free_file(t_file *path);
 
 /*
 ** lst_dir
