@@ -29,13 +29,14 @@ int		fill_last_modif(t_file *new, struct stat *file)
 	time_t	timer;
 	time_t	diff;
 
-	timer = time(&timer);
+	timer = time(NULL);
 	new->modif_hours = NULL;
 	new->modif_years = NULL;
 	new->modif_timestamps = file->st_mtime;
 	if ((diff = timer - file->st_mtime) < 0)
 		diff *= -1;
-	if ((timer - file->st_mtime) < 1.577e+7)
+	if ((timer - 1.577e+7) < file->st_mtime
+		&& (timer + 1.577e+7) > file->st_mtime)
 		new->modif_hours = ft_strsub(ctime(&(file->st_mtime)), 11, 5);
 	else
 		new->modif_years = ft_strsub(ctime(&(file->st_mtime)), 20, 4);

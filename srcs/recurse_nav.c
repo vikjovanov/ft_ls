@@ -34,7 +34,7 @@ int					fill_lst_file(DIR *current_dir, char *path)
 			return (free_path(pathname));
 		if ((LST_FILE = insert_back_file(LST_FILE, &infos_element,
 				dir_element->d_name, pathname)) == NULL)
-			return (free_path(pathname));
+			return (!free_path(pathname));
 		ft_memdel((void**)&(pathname));
 	}
 	else

@@ -30,9 +30,8 @@ void	regular_print(t_file *lst_file, t_field *min_field)
 			ft_printf("%*ld ", min_field->size_byte, lst_file->size_byte);
 		ft_printf("%s ", lst_file->modif_month);
 		ft_printf("%s ", lst_file->modif_day);
-		if (lst_file->modif_hours != NULL)
-			ft_printf("%*s ", min_field->modif_hy, (lst_file->modif_hours
-				!= NULL) ? lst_file->modif_hours : lst_file->modif_years);
+		ft_printf("%*s ", min_field->modif_hy, (lst_file->modif_hours
+			!= NULL) ? lst_file->modif_hours : lst_file->modif_years);
 	}
 	if (lst_file->file_type == 'l' && (PARAMS & PARAM_L))
 		ft_printf("%s -> %s\n", lst_file->pathname, lst_file->symlink);

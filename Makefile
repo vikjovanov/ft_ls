@@ -14,6 +14,7 @@ NAME= ft_ls
 
 LIBFT_NAME= libft
 LIBFT_LIB= libft/libft.a
+LIBFT_LIB_CMD= -L libft/ -lft
 
 SRCS= ft_ls.c arg_checker.c generic_func.c error.c main_printer.c recurse_nav.c \
 		gen_printer.c
@@ -46,7 +47,7 @@ all:
 
 $(NAME): $(OBJS_DIR)
 	@make -C libft/
-	@$(CC) $(CFLAGS) $(OBJS_DIR) $(LIBFT_LIB) $(INCLUDES) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS_DIR) $(LIBFT_LIB_CMD) $(INCLUDES) -o $(NAME)
 	@echo "$(GCCMAGENTA)$(basename $(NAME)): $(GCCRESET)$(GCCGREEN)SUCCESS$(GCCRESET)"
 
 $(OBJ_DIR)%.o: $(SRCS_DIR)%.c

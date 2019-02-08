@@ -36,7 +36,8 @@
 # define PARAM_P 64
 # define PARAM_N 128
 # define PARAM_F 256
-# define ACCEPTED_PARAMS "lraRtopnf"
+# define PARAM_1 512
+# define ACCEPTED_PARAMS "lraRtopnf1"
 
 # define MAX_LENGTH_FILENAME 4096
 # define MINORBITS        24
